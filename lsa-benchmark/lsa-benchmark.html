@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../css/generic-dark.css">
+
+    <!-- font awesome -->
+    <link rel="stylesheet" href="../lib/fontawesome/css/all.css">
+
+    <!-- page style -->
+    <style>
+        .panel {
+            width: fit-content;
+            padding: 1em;
+            margin-left: 1em;
+            background-color: #ffffff55;
+            border-radius: 0.4em;
+        }
+
+        textarea {
+            width: 99%;
+            height: 10em;
+            padding: 0.5em;
+            border-width: 0;
+            border-radius: 0.4em;
+            background-color: #ffffff55;
+        }
+
+        input[type="radio"i] {
+            background-color: initial;
+            cursor: default;
+            -webkit-appearance: radio;
+            box-sizing: border-box;
+            margin: 3px 3px 0px 5px;
+            padding: initial;
+            border: initial;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Part 1</h1>
+    <div>
+        <h2>Question 1</h2>
+        <p>Answer the question according to the conversation below.</p>
+        <div class="panel">
+            <p>A: You didn't go to the meeting, did you?</p>
+            <p>B: Yes.</p>
+        </div>
+        <p><span>Did <strong>B</strong> go to the meeting?</span>
+            <input type="radio" id="q1-radio-yes" name="q1-radio" value="yes" style="margin: 0 0.2em 0 1em">
+            <label for="q1-radio-yes">
+                <i class="fas fa-check-circle" style="margin: 0 0.2em; color: lightgreen"></i><span>Yes</span>
+            </label>
+
+            <input type="radio" id="q1-radio-no" name="q1-radio" value="no">
+            <i class="fas fa-times-circle" style="margin: 0 0.2em 0 1em; color: lightcoral"></i><span>No</span>
+        </p>
+    </div>
+
+    <div>
+        <h2>Question 2</h2>
+        <p>What are the top 3 hobbies you have? List some achievements (if there are any) on each area.</p>
+        <textarea id="q2-answer"></textarea>
+    </div>
+</body>

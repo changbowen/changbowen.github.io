@@ -1,0 +1,23 @@
+@font-face {
+    font-family: 'Saira Semi Condensed';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/SairaSemiCondensed-Regular.ttf');
+}
+
+body {
+    font-family: 'Saira Semi Condensed', sans-serif;
+    color: lightgray;
+    background-color: black;
+}
+
+body * {
+    font-family: 'Saira Semi Condensed', sans-serif;
+    color: lightgray;
+}
+
+p {
+    margin-block-start: 0.2em;
+    margin-block-end: 0.2em;
+}
