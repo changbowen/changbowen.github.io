@@ -6,6 +6,9 @@
     <!-- font awesome -->
     <link rel="stylesheet" href="../lib/fontawesome/css/all.css">
 
+    <!-- help script -->
+    <script src="lsa-benchmark-helpers.js"></script>
+
     <!-- page style -->
     <style>
         .panel {
@@ -34,12 +37,26 @@
             padding: initial;
             border: initial;
         }
+
+        .question-choice {
+            padding-left: 1em;
+            display: flex;
+            align-items: center;
+        }
+
+        .question-choice-selected::before {
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            content: "\f00c";
+            transform: translateX(-1em);
+        }
     </style>
 </head>
 
 <body>
     <h1>Part 1</h1>
-    <div>
+    <!-- <div>
         <h2>Question 1</h2>
         <p>Answer the question according to the conversation below.</p>
         <div class="panel">
@@ -61,5 +78,33 @@
         <h2>Question 2</h2>
         <p>What are the top 3 hobbies you have? List some achievements (if there are any) on each area.</p>
         <textarea id="q2-answer"></textarea>
-    </div>
+    </div> -->
+
+    <ce-question index="2">
+        <h2 class="question-head">Question 2</h2>
+        <p class="question-body">Sample text question??????????</p>
+        <textarea class="question-text"></textarea>
+    </ce-question>
+
+    <ce-question index="3" type='single-choice'>
+        <h2 class="question-head">Question 3</h2>
+        <p class="question-body">Sample single choice question??????????</p>
+        <div class="question-choice" value="yes">
+            <i class="fas fa-smile" style="margin-left: 0.4em; color: lightgreen"></i>
+            <span style="margin-left: 0.4em">Yes</span>
+        </div>
+        <div class="question-choice" value="no">
+            <i class="fas fa-frown" style="margin-left: 0.4em; color: lightcoral"></i>
+            <span style="margin-left: 0.4em">No</span>
+        </div>
+    </ce-question>
+
+    <ce-question index="4" type='multi-choice'>
+        <h2 class="question-head">Question 4</h2>
+        <p class="question-body">Sample multi choice question!!!!!!!!!!</p>
+        <div class="question-choice" value="die"> <span style="margin-left: 0.4em">I would die.</span> </div>
+        <div class="question-choice" value="crap"> <span style="margin-left: 0.4em">I would crap.</span></div>
+        <div class="question-choice" value="fart"> <span style="margin-left: 0.4em">Fart as much as possible.</span></div>
+        <div class="question-choice" value="eat dirt"> <span style="margin-left: 0.4em">Eat some dirt.</span> </div>
+    </ce-question>
 </body>
