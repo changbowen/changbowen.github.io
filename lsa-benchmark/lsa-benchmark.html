@@ -1,50 +1,45 @@
 <!DOCTYPE html>
 
 <head>
+    <title>LSA Benchmark</title>
     <link rel="stylesheet" href="../css/generic-dark.css">
 
     <!-- font awesome -->
     <link rel="stylesheet" href="../lib/fontawesome/css/all.css">
 
     <!-- help script -->
+    <script src="../js/helpers.js"></script>
     <script src="lsa-benchmark-helpers.js"></script>
+
+    <!-- NotifyPop -->
+    <script src="../js/notify-pop.js"></script>
 
     <!-- page style -->
     <style>
         .panel {
             width: fit-content;
-            padding: 1em;
-            margin-left: 1em;
+            padding: 0.5em 1em;
             background-color: #ffffff55;
             border-radius: 0.4em;
         }
 
         textarea {
-            width: 99%;
-            height: 10em;
+            height: 1.6em;
             padding: 0.5em;
             border-width: 0;
             border-radius: 0.4em;
             background-color: #ffffff55;
+            font-size: 0.9em;
         }
 
-        input[type="radio"i] {
-            background-color: initial;
-            cursor: default;
-            -webkit-appearance: radio;
-            box-sizing: border-box;
-            margin: 3px 3px 0px 5px;
-            padding: initial;
-            border: initial;
-        }
-
-        .question-choice {
+        .question-answer {
             padding-left: 1em;
             display: flex;
             align-items: center;
+            width: fit-content;
         }
 
-        .question-choice-selected::before {
+        .question-answer-selected::before {
             font-family: 'Font Awesome 5 Free';
             font-weight: 900;
             position: absolute;
@@ -55,56 +50,134 @@
 </head>
 
 <body>
-    <h1>Part 1</h1>
-    <!-- <div>
-        <h2>Question 1</h2>
+<div class="panel"
+     style="display: flex; align-items: baseline; position: fixed; top: 0.5em; right: 0.5em; font-size: smaller">
+    <i class="fas fa-exclamation-circle"></i>
+    <div style="margin-left: 0.8em">
+        <p>Your progress will be saved if you close the window.</p>
+        <p>You can also save manually with CTRL + S.</p>
+    </div>
+</div>
+
+<h1>Part 1</h1>
+<ce-question type="single-choice">
+    <h2 class="question-head">Question 1</h2>
+    <div class="question-body">
         <p>Answer the question according to the conversation below.</p>
-        <div class="panel">
+        <div class="panel" style="margin-left: 0.5em;">
             <p>A: You didn't go to the meeting, did you?</p>
             <p>B: Yes.</p>
         </div>
-        <p><span>Did <strong>B</strong> go to the meeting?</span>
-            <input type="radio" id="q1-radio-yes" name="q1-radio" value="yes" style="margin: 0 0.2em 0 1em">
-            <label for="q1-radio-yes">
-                <i class="fas fa-check-circle" style="margin: 0 0.2em; color: lightgreen"></i><span>Yes</span>
-            </label>
-
-            <input type="radio" id="q1-radio-no" name="q1-radio" value="no">
-            <i class="fas fa-times-circle" style="margin: 0 0.2em 0 1em; color: lightcoral"></i><span>No</span>
-        </p>
+        <p>Did <strong>B</strong> go to the meeting?</p>
     </div>
+    <div class="question-answer" value="yes">
+        <i class="fas fa-smile" style="margin-left: 0.4em; color: lightgreen"></i>
+        <span style="margin-left: 0.4em">Yes</span>
+    </div>
+    <div class="question-answer" value="no">
+        <i class="fas fa-frown" style="margin-left: 0.4em; color: lightcoral"></i>
+        <span style="margin-left: 0.4em">No</span>
+    </div>
+</ce-question>
 
-    <div>
-        <h2>Question 2</h2>
-        <p>What are the top 3 hobbies you have? List some achievements (if there are any) on each area.</p>
-        <textarea id="q2-answer"></textarea>
-    </div> -->
+<ce-question type='text'>
+    <h2 class="question-head">Question 2</h2>
+    <p class="question-body">What are the top 3 hobbies you have? List some achievements (if there are any) on each
+        area.</p>
+    <textarea class="question-answer" style="width: 64em; margin-bottom: 0.5em"></textarea>
+    <textarea class="question-answer" style="width: 64em; margin-bottom: 0.5em"></textarea>
+    <textarea class="question-answer" style="width: 64em;"></textarea>
+</ce-question>
 
-    <ce-question index="2">
-        <h2 class="question-head">Question 2</h2>
-        <p class="question-body">Sample text question??????????</p>
-        <textarea class="question-text"></textarea>
-    </ce-question>
+<ce-question type='text'>
+    <h2 class="question-head">Question 3</h2>
+    <p class="question-body">What does the letter P inside the network acronym TCP stand for?</p>
+    <textarea class="question-answer" style="width: 64em;"></textarea>
+</ce-question>
 
-    <ce-question index="3" type='single-choice'>
-        <h2 class="question-head">Question 3</h2>
-        <p class="question-body">Sample single choice question??????????</p>
-        <div class="question-choice" value="yes">
-            <i class="fas fa-smile" style="margin-left: 0.4em; color: lightgreen"></i>
-            <span style="margin-left: 0.4em">Yes</span>
+<ce-question type='text'>
+    <h2 class="question-head">Question 4</h2>
+    <p class="question-body">What are the first few things you check when a user complains about a folder in the share
+        is missing?</p>
+    <textarea class="question-answer" style="width: 64em; height: 8em"></textarea>
+</ce-question>
+
+<ce-question type='text'>
+    <h2 class="question-head">Question 5</h2>
+    <p class="question-body">What would you do when you encounter a problem that you never seen before?</p>
+    <textarea class="question-answer" style="width: 64em; height: 8em"></textarea>
+</ce-question>
+
+<ce-question type='text'>
+    <h2 class="question-head">Question 6</h2>
+    <div class="question-body">
+        <p>On a PC with Windows Desktop Search enabled, what string to put in Outlook search box if you want to find the emails with all the below criteria:</p>
+        <ul>
+            <li>Larger than 1 MB</li>
+            <li>Received between Jan 1, 2019 and Jan 3, 2019</li>
+        </ul>
+    </div>
+    <textarea class="question-answer" style="width: 64em; height: 8em"></textarea>
+</ce-question>
+
+<ce-question type='text'>
+    <h2 class="question-head">Question 7</h2>
+    <p class="question-body"><span>During a </span><c>chkdsk</c><span> operation, the window has been frozen for about 2 hours looking like below. What could possibly be the reason?</span></p>
+    <img src="res/chkdsk-frozen.png">
+    <textarea class="question-answer" style="width: 64em; height: 8em"></textarea>
+</ce-question>
+
+<ce-question type='text'>
+    <h2 class="question-head">Question 8</h2>
+    <p class="question-body">On the PC, find out why pinging <c>www.baidu.com</c> doesn’t work, but Internet browsing works.</p>
+    <textarea class="question-answer" style="width: 64em; height: 8em"></textarea>
+</ce-question>
+
+<ce-question type='text'>
+    <h2 class="question-head">Question 9</h2>
+    <p class="question-body">On the PC, generate an HTML report of the group policy objects and save to Desktop.</p>
+</ce-question>
+
+<ce-question type='text'>
+    <h2 class="question-head">Question 10</h2>
+    <div class="question-body">
+        <p>On the PC, create a one-line command in PowerShell to test whether an IP address is in the correct format.</p>
+        <p>E.g. <c>192.168.1.100</c> is OK but <c>192.168.1.256</c> is not.</p>
+        <i style="font-size: smaller">Hint: Use Regex and Google to complete the task. The task does not require deep knowledge of Regex or PowerShell.</i>
+    </div>
+    <textarea class="question-answer" style="width: 64em; height: 8em; font-family: 'Shure Tech Mono', monospace"></textarea>
+</ce-question>
+
+
+<!--<ce-question index="3" type='multi-choice'>
+    <h2 class="question-head">Question 4</h2>
+    <p class="question-body">Sample multi choice question!!!!!!!!!!</p>
+    <div class="question-answer" value="die"><span style="margin-left: 0.4em">I would die.</span></div>
+    <div class="question-answer" value="crap"><span style="margin-left: 0.4em">I would crap.</span></div>
+    <div class="question-answer" value="fart"><span style="margin-left: 0.4em">Fart as much as possible.</span></div>
+    <div class="question-answer" value="eat dirt"><span style="margin-left: 0.4em">Eat some dirt.</span></div>
+</ce-question>-->
+
+<template id="pop-answer-saved">
+    <div class="panel" style="display: flex; align-items: baseline; background-color: #313131; filter: drop-shadow(0 0.125em 0.25em black);">
+        <i class="fas fa-check-circle" style="color: lightgreen"></i>
+        <div style="margin-left: 0.8em">
+            <p>Answers saved.</p>
         </div>
-        <div class="question-choice" value="no">
-            <i class="fas fa-frown" style="margin-left: 0.4em; color: lightcoral"></i>
-            <span style="margin-left: 0.4em">No</span>
-        </div>
-    </ce-question>
+    </div>
+</template>
+<script>
+    document.onkeydown = function (e) {
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            saveAllAnswers();
+            NotifyPop.notify(2000, document.getElementById('pop-answer-saved').content.querySelector('div').cloneNode(true));
+            // new Popper(document.body, );
+        }
+    };
 
-    <ce-question index="4" type='multi-choice'>
-        <h2 class="question-head">Question 4</h2>
-        <p class="question-body">Sample multi choice question!!!!!!!!!!</p>
-        <div class="question-choice" value="die"> <span style="margin-left: 0.4em">I would die.</span> </div>
-        <div class="question-choice" value="crap"> <span style="margin-left: 0.4em">I would crap.</span></div>
-        <div class="question-choice" value="fart"> <span style="margin-left: 0.4em">Fart as much as possible.</span></div>
-        <div class="question-choice" value="eat dirt"> <span style="margin-left: 0.4em">Eat some dirt.</span> </div>
-    </ce-question>
+    window.onbeforeunload = function () {
+        saveAllAnswers();
+    }
+</script>
 </body>

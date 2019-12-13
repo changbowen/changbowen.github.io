@@ -5,9 +5,17 @@
     font-display: swap;
     src: url('../fonts/SairaSemiCondensed-Regular.ttf');
 }
+@font-face {
+    font-family: 'Shure Tech Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/ShureTechMonoNerdFontCompleteMono.ttf');
+}
 
 body {
     font-family: 'Saira Semi Condensed', sans-serif;
+    font-size: 1.25em;
     color: lightgray;
     background-color: black;
 }
@@ -15,6 +23,18 @@ body {
 body * {
     font-family: 'Saira Semi Condensed', sans-serif;
     color: lightgray;
+}
+
+pre {
+    font-family: 'Shure Tech Mono', monospace;
+}
+
+c {
+    display: inline;
+    font-family: 'Shure Tech Mono', monospace;
+    border-radius: 0.125em;
+    background-color: #ffffff33;
+    padding: 0.125em;
 }
 
 p {
