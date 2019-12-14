@@ -159,8 +159,17 @@ function saveAnswer(/*Question*/question) {
 }
 window.customElements.define('ce-question', Question);
 
-function saveAllAnswers() {
+function saveAllAnswers(callback) {
     [...document.getElementsByTagName('ce-question')].forEach(e=>saveAnswer(e));
+    if (callback) callback.call();
+}
+
+function clearAllAnswers() {
+    if (confirm('Are you sure to clear all saved answers and reload? There is no going back!')) {
+        window.ignoreSave = true;
+        localStorage.clear();
+        location.reload();
+    }
 }
 
 String.prototype.hashCode = function() {

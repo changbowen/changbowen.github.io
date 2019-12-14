@@ -21,6 +21,7 @@
             padding: 0.5em 1em;
             background-color: #ffffff55;
             border-radius: 0.4em;
+            filter: drop-shadow(0 0.2em 0.3em #000000);
         }
 
         textarea {
@@ -28,21 +29,26 @@
             padding: 0.5em;
             border-width: 0;
             border-radius: 0.4em;
-            background-color: #ffffff55;
+            background-color: #ffffff33;
             font-size: 0.9em;
         }
 
         .question-answer {
-            padding-left: 1em;
             display: flex;
             align-items: center;
             width: fit-content;
         }
 
+        .question-answer-select {
+            margin-left: 1.5em;
+        }
+
         .question-answer-selected::before {
             font-family: 'Font Awesome 5 Free';
             font-weight: 900;
-            position: absolute;
+            position: relative;
+            width: 0;
+            right: 0.5em;
             content: "\f00c";
             transform: translateX(-1em);
         }
@@ -50,14 +56,29 @@
 </head>
 
 <body>
-<div class="panel"
-     style="display: flex; align-items: baseline; position: fixed; top: 0.5em; right: 0.5em; font-size: smaller">
-    <i class="fas fa-exclamation-circle"></i>
-    <div style="margin-left: 0.8em">
-        <p>Your progress will be saved if you close the window.</p>
-        <p>You can also save manually with CTRL + S.</p>
+<div class="panel" style="position: fixed; top: 0.5em; right: 0.5em; padding: 0.3em 0.7em;">
+    <div style="display: flex; align-items: baseline; font-size: smaller">
+        <i class="fas fa-exclamation-circle"></i>
+        <div style="margin-left: 0.8em">
+            <p>Your progress will be saved if you close the window.</p>
+            <p>You can also save manually with CTRL + S.</p>
+            <p>Your other options:</p>
+        </div>
     </div>
+    <i class="button round-button fas fa-trash-alt"
+       style="background-color: #781111; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
+       title="Clear saved answers"
+       onclick="clearAllAnswers()">
+    </i>
+    <i class="button round-button fas fa-save"
+       style="background-color: #207829; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
+       title="Save answers locally"
+       onclick="saveAllAnswers(notifySave)">
+    </i>
 </div>
+
+
+
 
 <h1>Part 1</h1>
 <ce-question type="single-choice">
@@ -70,14 +91,8 @@
         </div>
         <p>Did <strong>B</strong> go to the meeting?</p>
     </div>
-    <div class="question-answer" value="yes">
-        <i class="fas fa-smile" style="margin-left: 0.4em; color: lightgreen"></i>
-        <span style="margin-left: 0.4em">Yes</span>
-    </div>
-    <div class="question-answer" value="no">
-        <i class="fas fa-frown" style="margin-left: 0.4em; color: lightcoral"></i>
-        <span style="margin-left: 0.4em">No</span>
-    </div>
+    <p class="question-answer question-answer-select" value="yes">Yes</p>
+    <p class="question-answer question-answer-select" value="no">No</p>
 </ce-question>
 
 <ce-question type='text'>
@@ -129,7 +144,7 @@
 
 <ce-question type='text'>
     <h2 class="question-head">Question 8</h2>
-    <p class="question-body">On the PC, find out why pinging <c>www.baidu.com</c> doesn’t work, but Internet browsing works.</p>
+    <p class="question-body">On the PC, find out why pinging <c>www.baidu.com</c> doesn't work, but Internet browsing works.</p>
     <textarea class="question-answer" style="width: 64em; height: 8em"></textarea>
 </ce-question>
 
@@ -152,10 +167,10 @@
 <!--<ce-question index="3" type='multi-choice'>
     <h2 class="question-head">Question 4</h2>
     <p class="question-body">Sample multi choice question!!!!!!!!!!</p>
-    <div class="question-answer" value="die"><span style="margin-left: 0.4em">I would die.</span></div>
-    <div class="question-answer" value="crap"><span style="margin-left: 0.4em">I would crap.</span></div>
-    <div class="question-answer" value="fart"><span style="margin-left: 0.4em">Fart as much as possible.</span></div>
-    <div class="question-answer" value="eat dirt"><span style="margin-left: 0.4em">Eat some dirt.</span></div>
+    <div class="question-answer question-answer-select" value="die"><span style="margin-left: 0.4em">I would die.</span></div>
+    <div class="question-answer question-answer-select" value="crap"><span style="margin-left: 0.4em">I would crap.</span></div>
+    <div class="question-answer question-answer-select" value="fart"><span style="margin-left: 0.4em">Fart as much as possible.</span></div>
+    <div class="question-answer question-answer-select" value="eat dirt"><span style="margin-left: 0.4em">Eat some dirt.</span></div>
 </ce-question>-->
 
 <template id="pop-answer-saved">
@@ -167,17 +182,21 @@
     </div>
 </template>
 <script>
+    window.ignoreSave = false;
+
+    function notifySave() {
+        NotifyPop.notify(2000, document.getElementById('pop-answer-saved').content.querySelector('div').cloneNode(true));
+    }
+
     document.onkeydown = function (e) {
         if (e.ctrlKey && e.key === 's') {
             e.preventDefault();
-            saveAllAnswers();
-            NotifyPop.notify(2000, document.getElementById('pop-answer-saved').content.querySelector('div').cloneNode(true));
-            // new Popper(document.body, );
+            saveAllAnswers(notifySave);
         }
     };
 
     window.onbeforeunload = function () {
-        saveAllAnswers();
+        if (!window.ignoreSave) saveAllAnswers();
     }
 </script>
 </body>

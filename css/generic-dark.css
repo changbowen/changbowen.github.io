@@ -41,3 +41,32 @@ p {
     margin-block-start: 0.2em;
     margin-block-end: 0.2em;
 }
+
+.button {
+    margin: 0.125em;
+    border-radius: 10%;
+    text-align: center;
+    cursor: pointer;
+    color: #ffffffbb;
+    filter: brightness(100%) drop-shadow(0 0.1em 0.1em #000000cc);
+    transition: filter 0.3s, transform 0.2s;
+}
+.button:hover {
+    filter: brightness(140%) drop-shadow(0 0.2em 0.15em #000000cc);
+    transform: translateY(-0.1em);
+}
+.button:active {
+    filter: brightness(140%) drop-shadow(0 0.1em 0.1em #000000cc);
+    transform: translateY(0);
+}
+.button.disabled {
+    pointer-events: none;
+    filter: brightness(100%) drop-shadow(0 0.1em 0.1em #000000cc) grayscale(1);
+}
+
+.round-button {
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+    line-height: 2em !important;
+}
