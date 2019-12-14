@@ -5,10 +5,9 @@
  * answer: The answer based on type and user input.
  */
 class Question extends HTMLElement {
-    static get observedAttributes() {
-        return ['answer', 'type'];
-    }
-
+    /**
+     * This is the encrypted answer.
+     */
     get answer() { return this.getAttribute('answer'); }
     set answer(val) {
         if (val) this.setAttribute('answer', val);
@@ -95,6 +94,10 @@ class Question extends HTMLElement {
         });
     }
 
+/*
+    static get observedAttributes() {
+        return ['answer', 'type'];
+    }
     attributeChangedCallback(attrName, oldVal, newVal) {
         if (null === oldVal || oldVal === newVal) return;
         //update rendered content
@@ -110,10 +113,24 @@ class Question extends HTMLElement {
             callback(ele, newVal);
         }
     }
+*/
 }
 
-function loadAnswer(/*Question*/question) {
-    let stor = JSON.parse(localStorage.getItem(question.id));
+function loadAnswer(/*Question*/question, refAnswer = false) {
+    let stor;
+    if (refAnswer) {
+        //load reference answer. decryptKey should have been set
+        let gibberish = question.answer;
+        if (!gibberish) return;
+        let key = localStorage.getItem('decryptKey');
+        if (!key) throw new Error('decryptKey is not valid in localStorage.');
+        let decrypted = CryptoJS.AES.decrypt(gibberish, key).toString(CryptoJS.enc.Utf8);
+        if (!decrypted) return;
+        stor = JSON.parse(decrypted);
+    }
+    else
+        stor = JSON.parse(localStorage.getItem(question.id));
+
     if (!stor || !stor.answer) return;
     switch (question.type) {
         case 'text':
@@ -170,6 +187,33 @@ function clearAllAnswers() {
         localStorage.clear();
         location.reload();
     }
+}
+
+function loadRefAnswers(callback) {
+    if (!testDecryptKey()) return;
+
+    [...document.getElementsByTagName('ce-question')].forEach(e=>loadAnswer(e, true));
+    if (callback) callback.call();
+}
+
+function testDecryptKey() {
+    while (true) {
+        //check if key is set
+        if (!localStorage.getItem('decryptKey')) {
+            let key = prompt('Input the decryption key if you have it.');
+            if (!key) break;
+            localStorage.setItem('decryptKey', key);
+        }
+        //test if key is correct
+        let key = localStorage.getItem('decryptKey');
+        if (CryptoJS.AES.decrypt('U2FsdGVkX18rL1WTaSQeSym4/dND2ADvi3dOQR3eTsM=', key).toString(CryptoJS.enc.Utf8) === 'test')
+            return true;
+        else {
+            localStorage.removeItem('decryptKey');
+            alert('Invalid decryption key.');
+        }
+    }
+    return false;
 }
 
 String.prototype.hashCode = function() {

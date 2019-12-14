@@ -20,7 +20,7 @@ body {
     background-color: black;
 }
 
-body * {
+textarea {
     font-family: 'Saira Semi Condensed', sans-serif;
     color: lightgray;
 }

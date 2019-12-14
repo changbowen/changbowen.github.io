@@ -14,8 +14,15 @@
     <!-- NotifyPop -->
     <script src="../js/notify-pop.js"></script>
 
+    <!-- CryptoJS -->
+    <script src="../lib/CryptoJS/crypto-js.min.js"></script>
+
     <!-- page style -->
     <style>
+        .hidden {
+            display: none !important;
+        }
+
         .panel {
             width: fit-content;
             padding: 0.5em 1em;
@@ -73,6 +80,10 @@
 
 <body>
 <div class="panel" style="position: fixed; top: 0.5em; right: 0.5em; padding: 0.3em 0.7em;">
+    <p class="hidden" style="color: #ff7777; font-size: larger">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span style="margin-left: 0.2em">Admin Mode</span>
+    </p>
     <div style="display: flex; align-items: baseline; font-size: smaller">
         <i class="fas fa-exclamation-circle"></i>
         <div style="margin-left: 0.8em">
@@ -83,8 +94,13 @@
     </div>
     <i class="button round-button fas fa-trash-alt"
        style="background-color: #781111; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
-       title="Clear saved answers"
+       title="Clear everything"
        onclick="clearAllAnswers()">
+    </i>
+    <i class="button round-button fas fa-trash-alt hidden"
+       style="background-color: #304078; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
+       title="Get reference answers"
+       onclick="loadRefAnswers()">
     </i>
     <i class="button round-button fas fa-save"
        style="background-color: #207829; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
@@ -92,8 +108,6 @@
        onclick="saveAllAnswers(notifySave)">
     </i>
 </div>
-
-
 
 
 <h1>Part 1</h1>
@@ -111,7 +125,7 @@
     <p class="question-answer question-answer-select" value="no">No</p>
 </ce-question>
 
-<ce-question type='text'>
+<ce-question type='text' answer="some jiber jaber">
     <h2 class="question-head">Question 2</h2>
     <p class="question-body">What are the top 3 hobbies you have? List some achievements (if there are any) on each
         area.</p>
@@ -199,6 +213,11 @@
 </template>
 <script>
     window.ignoreSave = false;
+
+    //check if key exists and warn
+    if (testDecryptKey()) {
+        [...document.getElementsByClassName('hidden')].forEach(e=>e.classList.remove('hidden'));
+    }
 
     function notifySave() {
         NotifyPop.notify(2000, document.getElementById('pop-answer-saved').content.querySelector('div').cloneNode(true));
