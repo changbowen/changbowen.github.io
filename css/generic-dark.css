@@ -48,6 +48,7 @@ p {
     text-align: center;
     cursor: pointer;
     color: #ffffffbb;
+    transform: scale(0.9, 0.9);
     filter: brightness(100%) drop-shadow(0 0.1em 0.1em #000000cc);
     transition: filter 0.3s, transform 0.2s;
 }
@@ -56,7 +57,7 @@ p {
     transform: translateY(-0.1em);
 }
 .button:active {
-    filter: brightness(140%) drop-shadow(0 0.1em 0.1em #000000cc);
+    filter: brightness(100%) drop-shadow(0 0.1em 0.1em #000000cc);
     transform: translateY(0);
 }
 .button.disabled {

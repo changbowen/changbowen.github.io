@@ -40,17 +40,33 @@
         }
 
         .question-answer-select {
-            margin-left: 1.5em;
+            margin-left: 1.2em;
+            transform: scale(0.9, 0.9);
+            filter: brightness(100%) drop-shadow(0 0.1em 0.1em #000000cc);
+            transition: filter 0.3s, transform 0.2s;
         }
 
-        .question-answer-selected::before {
-            font-family: 'Font Awesome 5 Free';
+        .question-answer-select:hover {
+            filter: brightness(140%) drop-shadow(0 0.2em 0.15em #000000cc);
+            transform: translateY(-0.1em);
+        }
+        .question-answer-select:active {
+            filter: brightness(100%) drop-shadow(0 0.1em 0.1em #000000cc);
+            transform: translateY(0);
+        }
+
+        .question-answer-select::before {
+            font-family: 'Font Awesome 5 Free', sans-serif;
             font-weight: 900;
             position: relative;
             width: 0;
-            right: 0.5em;
-            content: "\f00c";
-            transform: translateX(-1em);
+            right: 1.2em;
+            content: "\f0c8";
+        }
+
+        .question-answer-selected::before {
+            content: "\f14a";
+            color: limegreen;
         }
     </style>
 </head>
