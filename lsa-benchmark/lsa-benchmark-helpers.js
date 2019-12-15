@@ -1,8 +1,7 @@
 /**
  * The below properties are used.
- * index: Question title (string). Example: Question 1.
  * type: Question type (string). Allowed values: text, single-choice, multi-choice;
- * answer: The answer based on type and user input.
+ * answer: The encrypted reference answer.
  */
 class Question extends HTMLElement {
     /**
@@ -24,67 +23,91 @@ class Question extends HTMLElement {
         super();
     }
 
-    /*The question header element*/
+    static Classes = {
+        Head: 'question-head',
+        Body: 'question-body',
+        Answer: 'question-answer',
+        Select: 'question-answer-select',
+        Selected: 'question-answer-selected',
+        RefAnswer: 'question-ref-answer',
+    };
+
+    static Types = {
+        Text: 'text',
+        SingleChoice: 'single-choice',
+        MultiChoice: 'multi-choice',
+    };
+
+    /**
+     * The question header element
+     * @returns {Element}
+     */
     get question_head() {
-        return this.getElementsByClassName('question-head')[0];
+        return this.getElementsByClassName(Question.Classes.Head)[0];
     }
 
-    /*The question body elements*/
+    /**
+     * The question body elements
+     * @returns {Element[]}
+     */
     get question_bodies() {
-        return [...this.getElementsByClassName('question-body')];
+        return [...this.getElementsByClassName(Question.Classes.Body)];
     }
 
-    /*The question answer elements*/
+    /**
+     * The question answer elements
+     * @returns {Element[]}
+     */
     get question_answers() {
-        return [...this.getElementsByClassName('question-answer')];
+        return [...this.getElementsByClassName(Question.Classes.Answer)];
+    }
+
+    static updateHeight(element, baseEm = 1.6) {
+        element.style.height = element.value.split('\n').length * baseEm + 'em';
     }
 
     connectedCallback() {
         this.className = 'question';
-        if (!this.type) this.type = 'text';
+        if (!this.type) this.type = Question.Types.Text;
 
         //wait till element contents are rendered
         setTimeout(() => {
             if (!this.id) this.id = 'q-' + this.question_head.textContent.trim().hashCode();
-            //type
+            //load saved answer
+            loadAnswer(this);
+            //post init
             switch (this.type) {
-                case 'text':
-                    //load saved answer
-                    loadAnswer(this);
-                    //post init
-                    this.question_answers.forEach(e => e.addEventListener('change', e => {
-                        //save answer
-                        saveAnswer(this);
-                    }));
+                case Question.Types.Text:
+                    this.question_answers.forEach(e => {
+                        e.addEventListener('scroll', ee => ee.currentTarget.scrollTop = 0);//prevent scrolling
+                        e.addEventListener('input', ee => {
+                            //auto grow height
+                            ee.currentTarget.scrollTop = 0;
+                            ee.currentTarget.style.height = ee.currentTarget.value.split('\n').length * 1.6 + 'em';
+                        });
+                        e.addEventListener('change', e => saveAnswer(this));
+                    });
                     break;
-                case 'single-choice':
-                case 'single_choice':
-                    //load saved answer
-                    loadAnswer(this);
-                    //init
-                    for (const choice of this.getElementsByClassName('question-answer')) {
+                case Question.Types.SingleChoice:
+                    for (const choice of this.getElementsByClassName(Question.Classes.Answer)) {
                         choice.style.cursor = 'pointer';
                         choice.addEventListener('click', e => {
                             //set selection status
                             this.question_answers.forEach(c => {
-                                c.classList.remove('question-answer-selected');
+                                c.classList.remove(Question.Classes.Selected);
                             });
-                            e.currentTarget.classList.add('question-answer-selected');
+                            e.currentTarget.classList.add(Question.Classes.Selected);
                             //save answer
                             saveAnswer(this);
                         });
                     }
                     break;
-                case 'multi-choice':
-                case 'multi_choice':
-                    //load saved answer
-                    loadAnswer(this);
-                    //init
-                    for (const choice of this.getElementsByClassName('question-answer')) {
+                case Question.Types.MultiChoice:
+                    for (const choice of this.getElementsByClassName(Question.Classes.Answer)) {
                         choice.style.cursor = 'pointer';
                         choice.addEventListener('click', e => {
                             //set selection status
-                            e.currentTarget.classList.toggle('question-answer-selected');
+                            e.currentTarget.classList.toggle(Question.Classes.Selected);
                             //save answer
                             saveAnswer(this);
                         });
@@ -116,55 +139,60 @@ class Question extends HTMLElement {
 */
 }
 
-function loadAnswer(/*Question*/question, refAnswer = false) {
+/**
+ * Load answer from localStorage (saved answer) or the answer attribute (reference answer).
+ * @param {Question} question
+ * @param {boolean} refAnswer
+ */
+function loadAnswer(question, refAnswer = false) {
     let stor;
     if (refAnswer) {
         //load reference answer. decryptKey should have been set
-        let gibberish = question.answer;
-        if (!gibberish) return;
-        let key = localStorage.getItem('decryptKey');
-        if (!key) throw new Error('decryptKey is not valid in localStorage.');
-        let decrypted = CryptoJS.AES.decrypt(gibberish, key).toString(CryptoJS.enc.Utf8);
+        let decrypted = decrypt(question.answer);
         if (!decrypted) return;
-        stor = JSON.parse(decrypted);
+        stor = { answer: JSON.parse(decrypted) };
     }
     else
         stor = JSON.parse(localStorage.getItem(question.id));
 
     if (!stor || !stor.answer) return;
     switch (question.type) {
-        case 'text':
+        case Question.Types.Text:
             let ans = question.question_answers;
+            ans.forEach(e=>{ e.value = null; e.style.removeProperty('height'); });//clear all text fields
             for (let i = 0; i < Math.min(ans.length, stor.answer.length); i++) {
                 ans[i].value = stor.answer[i];
+                Question.updateHeight(ans[i]);
             }
             break;
-        case 'single-choice':
-        case 'single_choice':
-        case 'multi-choice':
-        case 'multi_choice':
+        case Question.Types.SingleChoice:
+        case Question.Types.MultiChoice:
+            question.question_answers.forEach(e=>e.classList.remove(Question.Classes.Selected));//clear selections
             if (Object.keys(stor.answer).length === 0) break;
             let selected = question.question_answers.filter(e => stor.answer.hasOwnProperty(e.getAttribute('value')));
-            if (selected.length > 0) selected.forEach(e => e.classList.add('question-answer-selected'));
+            if (selected.length > 0) selected.forEach(e => e.classList.add(Question.Classes.Selected));
             break;
     }
+
+    if (refAnswer) question.question_head.classList.add(Question.Classes.RefAnswer);
+    else question.question_head.classList.remove(Question.Classes.RefAnswer);
 }
 
 function saveAnswer(/*Question*/question) {
-    let entry_val = {
+    if (window.skipSaving) return;
+
+    let stor = {
         question: question.question_bodies.map(e=>e.textContent.trim()),
         answer: null,
     };
     switch (question.type) {
-        case 'text':
+        case Question.Types.Text:
             if (question.question_answers.length === 0) break;
-            entry_val.answer = question.question_answers.map(e=>e.value);
+            stor.answer = question.question_answers.map(e=>e.value);
             break;
-        case 'single-choice':
-        case 'single_choice':
-        case 'multi-choice':
-        case 'multi_choice':
-            entry_val.answer = [...question.getElementsByClassName('question-answer-selected')].reduce((pre, cur) => {
+        case Question.Types.SingleChoice:
+        case Question.Types.MultiChoice:
+            stor.answer = [...question.getElementsByClassName(Question.Classes.Selected)].reduce((pre, cur) => {
                 pre[cur.getAttribute('value')] = cur.textContent.trim();
                 return pre;
             }, {});
@@ -172,28 +200,38 @@ function saveAnswer(/*Question*/question) {
         default:
             return;
     }
-    localStorage.setItem(question.id, JSON.stringify(entry_val));
+    localStorage.setItem(question.id, JSON.stringify(stor));
 }
+
 window.customElements.define('ce-question', Question);
 
+
 function saveAllAnswers(callback) {
+    if (window.skipSaving) return;
     [...document.getElementsByTagName('ce-question')].forEach(e=>saveAnswer(e));
-    if (callback) callback.call();
+    if (callback) callback()
 }
 
 function clearAllAnswers() {
     if (confirm('Are you sure to clear all saved answers and reload? There is no going back!')) {
-        window.ignoreSave = true;
+        window.skipSaving = true;
         localStorage.clear();
         location.reload();
     }
 }
 
-function loadRefAnswers(callback) {
-    if (!testDecryptKey()) return;
-
-    [...document.getElementsByTagName('ce-question')].forEach(e=>loadAnswer(e, true));
-    if (callback) callback.call();
+function toggleRefAnswers(callback) {
+    window.refAnswer = !window.refAnswer;
+    if (window.refAnswer) {
+        if (!testDecryptKey()) return;
+        window.skipSaving = true;
+        [...document.getElementsByTagName('ce-question')].forEach(e=>loadAnswer(e, true));
+    }
+    else {
+        window.skipSaving = false;
+        [...document.getElementsByTagName('ce-question')].forEach(e=>loadAnswer(e));
+    }
+    if (callback) callback();
 }
 
 function testDecryptKey() {
@@ -216,15 +254,24 @@ function testDecryptKey() {
     return false;
 }
 
-String.prototype.hashCode = function() {
-    let hash = 0;
-    if (this.length === 0) {
-        return hash;
-    }
-    for (let i = 0; i < this.length; i++) {
-        let char = this.charCodeAt(i);
-        hash = ((hash<<5)-hash)+char;
-        hash = hash & hash; // Convert to 32bit integer
-    }
-    return hash;
-};
+/**
+ * Assumes decryptKey is set.
+ * @param {string} gibberish The encrypted string.
+ */
+function decrypt(gibberish) {
+    if (!gibberish) return null;
+    let key = localStorage.getItem('decryptKey');
+    if (!key) return null;
+    return CryptoJS.AES.decrypt(gibberish, key).toString(CryptoJS.enc.Utf8);
+}
+
+/**
+ * Assumes decryptKey is set.
+ * @param {string} text The string to encrypt.
+ */
+function encrypt(text) {
+    if (!text) return null;
+    let key = localStorage.getItem('decryptKey');
+    if (!key) return null;
+    return CryptoJS.AES.encrypt(text, key).toString();
+}

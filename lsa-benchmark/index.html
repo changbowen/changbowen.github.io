@@ -38,6 +38,12 @@
             border-radius: 0.4em;
             background-color: #ffffff33;
             font-size: 0.9em;
+            resize: none;
+            overflow: hidden;
+            transition: height 0.3s;
+        }
+        textarea.question-answer{
+            width: 64em;
         }
 
         .question-answer {
@@ -75,6 +81,15 @@
             content: "\f14a";
             color: limegreen;
         }
+
+        .question-ref-answer::after {
+            font-family: 'Font Awesome 5 Free', sans-serif;
+            font-weight: 900;
+            content: '\f02d';
+            position: relative;
+            left: 0.5em;
+            color: #ffda55;
+        }
     </style>
 </head>
 
@@ -89,7 +104,7 @@
         <div style="margin-left: 0.8em">
             <p>Your progress will be saved if you close the window.</p>
             <p>You can also save manually with CTRL + S.</p>
-            <p>Your other options:</p>
+            <p>Your current options:</p>
         </div>
     </div>
     <i class="button round-button fas fa-trash-alt"
@@ -97,21 +112,29 @@
        title="Clear everything"
        onclick="clearAllAnswers()">
     </i>
-    <i class="button round-button fas fa-trash-alt hidden"
+    <i class="button round-button fas fa-file-import hidden"
        style="background-color: #304078; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
-       title="Get reference answers"
-       onclick="loadRefAnswers()">
+       title="Toggle reference answers"
+       onclick="toggleRefAnswers(()=>
+            popupCheck(window.refAnswer ?
+                'Showing reference answers!\r\nAuto save disabled.' :
+                'Showing saved answers!\r\nAuto save enabled.'))">
+    </i>
+    <i class="button round-button fas fa-file-download hidden"
+       style="background-color: #856827; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
+       title="Export answers"
+       onclick="exportAllAnswers()">
     </i>
     <i class="button round-button fas fa-save"
        style="background-color: #207829; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
        title="Save answers locally"
-       onclick="saveAllAnswers(notifySave)">
+       onclick="saveAllAnswers(()=>popupCheck('Answers saved!'))">
     </i>
 </div>
 
 
 <h1>Part 1</h1>
-<ce-question type="single-choice">
+<ce-question type="single-choice" answer="U2FsdGVkX1/KaMK/MbclCYURxeEjMJjFpbOBo/j28cc=">
     <h2 class="question-head">Question 1</h2>
     <div class="question-body">
         <p>Answer the question according to the conversation below.</p>
@@ -125,32 +148,32 @@
     <p class="question-answer question-answer-select" value="no">No</p>
 </ce-question>
 
-<ce-question type='text' answer="some jiber jaber">
+<ce-question type='text' answer="U2FsdGVkX1837MrJbVJIg2wTx5DGE5CnTxSLS7oKlZRGtRiIPmjoY/NZqjaztFpDcuR4abGE+homADG9/7pQ1j6/tT4GQq/dMqrT+PFbi9nidV0raEQ/taMggSBV21wp49ozh2UAe4KVnbFFLc4DwQ==">
     <h2 class="question-head">Question 2</h2>
     <p class="question-body">What are the top 3 hobbies you have? List some achievements (if there are any) on each
         area.</p>
-    <textarea class="question-answer" style="width: 64em; margin-bottom: 0.5em"></textarea>
-    <textarea class="question-answer" style="width: 64em; margin-bottom: 0.5em"></textarea>
-    <textarea class="question-answer" style="width: 64em;"></textarea>
+    <textarea class="question-answer" style="margin-bottom: 0.5em"></textarea>
+    <textarea class="question-answer" style="margin-bottom: 0.5em"></textarea>
+    <textarea class="question-answer"></textarea>
 </ce-question>
 
-<ce-question type='text'>
+<ce-question type='text' answer="U2FsdGVkX19tANQgpg5yg6qxBMOtmIExFqiXVKcETKE=">
     <h2 class="question-head">Question 3</h2>
     <p class="question-body">What does the letter P inside the network acronym TCP stand for?</p>
-    <textarea class="question-answer" style="width: 64em;"></textarea>
+    <textarea class="question-answer"></textarea>
 </ce-question>
 
 <ce-question type='text'>
     <h2 class="question-head">Question 4</h2>
     <p class="question-body">What are the first few things you check when a user complains about a folder in the share
         is missing?</p>
-    <textarea class="question-answer" style="width: 64em; height: 8em"></textarea>
+    <textarea class="question-answer"></textarea>
 </ce-question>
 
 <ce-question type='text'>
     <h2 class="question-head">Question 5</h2>
     <p class="question-body">What would you do when you encounter a problem that you never seen before?</p>
-    <textarea class="question-answer" style="width: 64em; height: 8em"></textarea>
+    <textarea class="question-answer"></textarea>
 </ce-question>
 
 <ce-question type='text'>
@@ -162,20 +185,20 @@
             <li>Received between Jan 1, 2019 and Jan 3, 2019</li>
         </ul>
     </div>
-    <textarea class="question-answer" style="width: 64em; height: 8em"></textarea>
+    <textarea class="question-answer"></textarea>
 </ce-question>
 
 <ce-question type='text'>
     <h2 class="question-head">Question 7</h2>
     <p class="question-body"><span>During a </span><c>chkdsk</c><span> operation, the window has been frozen for about 2 hours looking like below. What could possibly be the reason?</span></p>
     <img src="res/chkdsk-frozen.png">
-    <textarea class="question-answer" style="width: 64em; height: 8em"></textarea>
+    <textarea class="question-answer"></textarea>
 </ce-question>
 
 <ce-question type='text'>
     <h2 class="question-head">Question 8</h2>
     <p class="question-body">On the PC, find out why pinging <c>www.baidu.com</c> doesn't work, but Internet browsing works.</p>
-    <textarea class="question-answer" style="width: 64em; height: 8em"></textarea>
+    <textarea class="question-answer"></textarea>
 </ce-question>
 
 <ce-question type='text'>
@@ -190,7 +213,7 @@
         <p>E.g. <c>192.168.1.100</c> is OK but <c>192.168.1.256</c> is not.</p>
         <i style="font-size: smaller">Hint: Use Regex and Google to complete the task. The task does not require deep knowledge of Regex or PowerShell.</i>
     </div>
-    <textarea class="question-answer" style="width: 64em; height: 8em; font-family: 'Shure Tech Mono', monospace"></textarea>
+    <textarea class="question-answer" style="height: 8em; font-family: 'Shure Tech Mono', monospace"></textarea>
 </ce-question>
 
 
@@ -203,35 +226,49 @@
     <div class="question-answer question-answer-select" value="eat dirt"><span style="margin-left: 0.4em">Eat some dirt.</span></div>
 </ce-question>-->
 
-<template id="pop-answer-saved">
+<template id="popup-check">
     <div class="panel" style="display: flex; align-items: baseline; background-color: #313131; filter: drop-shadow(0 0.125em 0.25em black);">
         <i class="fas fa-check-circle" style="color: lightgreen"></i>
         <div style="margin-left: 0.8em">
-            <p>Answers saved.</p>
+            <p id="popup-check-text" style="white-space: pre">Operation completed!</p>
         </div>
     </div>
 </template>
 <script>
-    window.ignoreSave = false;
+    window.skipSaving = false;
+
+    function popupCheck(text) {
+        let pop = document.getElementById('popup-check').content.firstElementChild.cloneNode(true);
+        pop.querySelector('#popup-check-text').textContent = text;
+        NotifyPop.notify(2000, pop);
+    }
+
+    function autoHeight(element) {
+        element.style.height = "5px";
+        element.style.height = (element.scrollHeight)+"px";
+    }
 
     //check if key exists and warn
     if (testDecryptKey()) {
         [...document.getElementsByClassName('hidden')].forEach(e=>e.classList.remove('hidden'));
     }
 
-    function notifySave() {
-        NotifyPop.notify(2000, document.getElementById('pop-answer-saved').content.querySelector('div').cloneNode(true));
-    }
-
     document.onkeydown = function (e) {
         if (e.ctrlKey && e.key === 's') {
             e.preventDefault();
-            saveAllAnswers(notifySave);
+            saveAllAnswers(()=>popupCheck('Answers saved!'));
         }
     };
 
     window.onbeforeunload = function () {
-        if (!window.ignoreSave) saveAllAnswers();
+        saveAllAnswers();
+    };
+
+
+
+
+    function getEncryptedAnswer(answer) {
+        return encrypt(JSON.stringify(answer));
     }
 </script>
 </body>
