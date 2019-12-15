@@ -38,6 +38,8 @@ class Question extends HTMLElement {
         MultiChoice: 'multi-choice',
     };
 
+    static AutoSizeTimer;
+
     /**
      * The question header element
      * @returns {Element}
@@ -62,9 +64,15 @@ class Question extends HTMLElement {
         return [...this.getElementsByClassName(Question.Classes.Answer)];
     }
 
-    static updateHeight(element, baseEm = 1.6) {
-        element.style.height = element.value.split('\n').length * baseEm + 'em';
+    static updateHeight(element, initial = '1.6em') {
+        //A hack to get the correct scrollHeight. Otherwise scrollHeight is not shrinking.
+        let oldHeight = $(element).height() + 'px';
+        element.style.height = initial;
+        let newHeight = (element.scrollHeight - 18) + 'px';
+        element.style.height = oldHeight;
+        $(element).animate({ height: newHeight }, 300);
     }
+
 
     connectedCallback() {
         this.className = 'question';
@@ -79,13 +87,14 @@ class Question extends HTMLElement {
             switch (this.type) {
                 case Question.Types.Text:
                     this.question_answers.forEach(e => {
-                        e.addEventListener('scroll', ee => ee.currentTarget.scrollTop = 0);//prevent scrolling
+                        e.addEventListener('scroll', ee => ee.target.scrollTop = 0);//prevent scrolling due to height auto growth
                         e.addEventListener('input', ee => {
                             //auto grow height
-                            ee.currentTarget.scrollTop = 0;
-                            ee.currentTarget.style.height = ee.currentTarget.value.split('\n').length * 1.6 + 'em';
+                            ee.target.scrollTop = 0;
+                            clearTimeout(Question.AutoSizeTimer);//reduce resize calls when typing
+                            Question.AutoSizeTimer = setTimeout(()=>Question.updateHeight(ee.target), 200);
                         });
-                        e.addEventListener('change', e => saveAnswer(this));
+                        e.addEventListener('change', () => saveAnswer(this));
                     });
                     break;
                 case Question.Types.SingleChoice:
@@ -159,10 +168,10 @@ function loadAnswer(question, refAnswer = false) {
     switch (question.type) {
         case Question.Types.Text:
             let ans = question.question_answers;
-            ans.forEach(e=>{ e.value = null; e.style.removeProperty('height'); });//clear all text fields
+            ans.forEach(e=>{ e.value = null; });//clear all text fields
             for (let i = 0; i < Math.min(ans.length, stor.answer.length); i++) {
                 ans[i].value = stor.answer[i];
-                Question.updateHeight(ans[i]);
+                setTimeout(() => Question.updateHeight(ans[i]));
             }
             break;
         case Question.Types.SingleChoice:

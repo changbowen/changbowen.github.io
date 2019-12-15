@@ -9,6 +9,7 @@
 
     <!-- help script -->
     <script src="../js/helpers.js"></script>
+    <script src="../lib/jQuery/jquery-3.4.1.min.js"></script>
     <script src="lsa-benchmark-helpers.js"></script>
 
     <!-- NotifyPop -->
@@ -40,9 +41,9 @@
             font-size: 0.9em;
             resize: none;
             overflow: hidden;
-            transition: height 0.3s;
         }
-        textarea.question-answer{
+
+        textarea.question-answer {
             width: 64em;
         }
 
@@ -63,6 +64,7 @@
             filter: brightness(140%) drop-shadow(0 0.2em 0.15em #000000cc);
             transform: translateY(-0.1em);
         }
+
         .question-answer-select:active {
             filter: brightness(100%) drop-shadow(0 0.1em 0.1em #000000cc);
             transform: translateY(0);
@@ -148,16 +150,20 @@
     <p class="question-answer question-answer-select" value="no">No</p>
 </ce-question>
 
-<ce-question type='text' answer="U2FsdGVkX1837MrJbVJIg2wTx5DGE5CnTxSLS7oKlZRGtRiIPmjoY/NZqjaztFpDcuR4abGE+homADG9/7pQ1j6/tT4GQq/dMqrT+PFbi9nidV0raEQ/taMggSBV21wp49ozh2UAe4KVnbFFLc4DwQ==">
+<ce-question type='text'
+             answer="U2FsdGVkX1837MrJbVJIg2wTx5DGE5CnTxSLS7oKlZRGtRiIPmjoY/NZqjaztFpDcuR4abGE+homADG9/7pQ1j6/tT4GQq/dMqrT+PFbi9nidV0raEQ/taMggSBV21wp49ozh2UAe4KVnbFFLc4DwQ==">
     <h2 class="question-head">Question 2</h2>
     <p class="question-body">What are the top 3 hobbies you have? List some achievements (if there are any) on each
         area.</p>
-    <textarea class="question-answer" style="margin-bottom: 0.5em"></textarea>
+    <label>
+        <textarea class="question-answer" style="margin-bottom: 0.5em"></textarea>
+    </label>
     <textarea class="question-answer" style="margin-bottom: 0.5em"></textarea>
     <textarea class="question-answer"></textarea>
 </ce-question>
 
-<ce-question type='text' answer="U2FsdGVkX19tANQgpg5yg6qxBMOtmIExFqiXVKcETKE=">
+<ce-question type='text'
+             answer="U2FsdGVkX1+/4OPdPpBWskbn3Drs4pTjiFvDIptHVhfI4s09bCS9nS689tzXgFywKOBRB9BeCy1Iv0I9uROJv7k1cxIWhgGxpLKY0a2mZyzH8Y7MNlsrcA3LHOe2BNohSW6P+M90jGtThjU3iFqrAg3wvY/SUNPj9KNHCHZIO2ya8lkb02tmlrMBiZWUaTE3DW5nzpR+h++N+aF9hNgZm+Laqy5sfzoOAdZN/vGUSnzgX5MKyc/BTCpAIwqwNMse/0TEJqyZrBT8oLwAHIOVpLN1YfTC1k6WDjgWPgTNqUHqlJnwn+Uqk9+1vTkyjfVZVNdG6OPllCTGcuskvyuzormOUCeoUmNu4YY7v2YTiYAjwQjRSie6R+YloZCFxMVky+kKy0W5PlUoOqKf/D8vzw==">
     <h2 class="question-head">Question 3</h2>
     <p class="question-body">What does the letter P inside the network acronym TCP stand for?</p>
     <textarea class="question-answer"></textarea>
@@ -179,7 +185,8 @@
 <ce-question type='text'>
     <h2 class="question-head">Question 6</h2>
     <div class="question-body">
-        <p>On a PC with Windows Desktop Search enabled, what string to put in Outlook search box if you want to find the emails with all the below criteria:</p>
+        <p>On a PC with Windows Desktop Search enabled, what string to put in Outlook search box if you want to find the
+            emails with all the below criteria:</p>
         <ul>
             <li>Larger than 1 MB</li>
             <li>Received between Jan 1, 2019 and Jan 3, 2019</li>
@@ -190,14 +197,20 @@
 
 <ce-question type='text'>
     <h2 class="question-head">Question 7</h2>
-    <p class="question-body"><span>During a </span><c>chkdsk</c><span> operation, the window has been frozen for about 2 hours looking like below. What could possibly be the reason?</span></p>
+    <p class="question-body"><span>During a </span>
+        <c>chkdsk</c>
+        <span> operation, the window has been frozen for about 2 hours looking like below. What could possibly be the reason?</span>
+    </p>
     <img src="res/chkdsk-frozen.png">
     <textarea class="question-answer"></textarea>
 </ce-question>
 
 <ce-question type='text'>
     <h2 class="question-head">Question 8</h2>
-    <p class="question-body">On the PC, find out why pinging <c>www.baidu.com</c> doesn't work, but Internet browsing works.</p>
+    <p class="question-body">On the PC, find out why pinging
+        <c>www.baidu.com</c>
+        doesn't work, but Internet browsing works.
+    </p>
     <textarea class="question-answer"></textarea>
 </ce-question>
 
@@ -209,9 +222,16 @@
 <ce-question type='text'>
     <h2 class="question-head">Question 10</h2>
     <div class="question-body">
-        <p>On the PC, create a one-line command in PowerShell to test whether an IP address is in the correct format.</p>
-        <p>E.g. <c>192.168.1.100</c> is OK but <c>192.168.1.256</c> is not.</p>
-        <i style="font-size: smaller">Hint: Use Regex and Google to complete the task. The task does not require deep knowledge of Regex or PowerShell.</i>
+        <p>On the PC, create a one-line command in PowerShell to test whether an IP address is in the correct
+            format.</p>
+        <p>E.g.
+            <c>192.168.1.100</c>
+            is OK but
+            <c>192.168.1.256</c>
+            is not.
+        </p>
+        <i style="font-size: smaller">Hint: Use Regex and Google to complete the task. The task does not require deep
+            knowledge of Regex or PowerShell.</i>
     </div>
     <textarea class="question-answer" style="height: 8em; font-family: 'Shure Tech Mono', monospace"></textarea>
 </ce-question>
@@ -227,7 +247,8 @@
 </ce-question>-->
 
 <template id="popup-check">
-    <div class="panel" style="display: flex; align-items: baseline; background-color: #313131; filter: drop-shadow(0 0.125em 0.25em black);">
+    <div class="panel"
+         style="display: flex; align-items: baseline; background-color: #313131; filter: drop-shadow(0 0.125em 0.25em black);">
         <i class="fas fa-check-circle" style="color: lightgreen"></i>
         <div style="margin-left: 0.8em">
             <p id="popup-check-text" style="white-space: pre">Operation completed!</p>
@@ -245,18 +266,18 @@
 
     function autoHeight(element) {
         element.style.height = "5px";
-        element.style.height = (element.scrollHeight)+"px";
+        element.style.height = (element.scrollHeight) + "px";
     }
 
     //check if key exists and warn
     if (testDecryptKey()) {
-        [...document.getElementsByClassName('hidden')].forEach(e=>e.classList.remove('hidden'));
+        [...document.getElementsByClassName('hidden')].forEach(e => e.classList.remove('hidden'));
     }
 
     document.onkeydown = function (e) {
         if (e.ctrlKey && e.key === 's') {
             e.preventDefault();
-            saveAllAnswers(()=>popupCheck('Answers saved!'));
+            saveAllAnswers(() => popupCheck('Answers saved!'));
         }
     };
 
@@ -264,8 +285,9 @@
         saveAllAnswers();
     };
 
-
-
+    window.onload = function () {
+        [...document.querySelectorAll('.question-answer:not(.question-answer-select)')].forEach(a=>Question.updateHeight(a));
+    };
 
     function getEncryptedAnswer(answer) {
         return encrypt(JSON.stringify(answer));
