@@ -13,6 +13,15 @@ class Question extends HTMLElement {
         else this.removeAttribute('answer');
     }
 
+    /**
+     * This is the encrypted tip to the question.
+     */
+    get tip() { return this.getAttribute('tip'); }
+    set tip(val) {
+        if (val) this.setAttribute('tip', val);
+        else this.removeAttribute('tip');
+    }
+
     get type() { return this.getAttribute('type'); }
     set type(val) {
         if (val) this.setAttribute('type', val);
@@ -30,6 +39,7 @@ class Question extends HTMLElement {
         Select: 'question-answer-select',
         Selected: 'question-answer-selected',
         RefAnswer: 'question-ref-answer',
+        Tip: 'question-tip',
     };
 
     static Types = {
@@ -57,6 +67,15 @@ class Question extends HTMLElement {
     }
 
     /**
+     * The question tip element
+     * @returns {Element | null}
+     */
+    get question_tip() {
+        let tipCol = this.getElementsByClassName(Question.Classes.Tip);
+        return tipCol.length > 0 ? tipCol[0] : null;
+    }
+
+    /**
      * The question answer elements
      * @returns {Element[]}
      */
@@ -71,6 +90,11 @@ class Question extends HTMLElement {
         let newHeight = (element.scrollHeight - 18) + 'px';
         element.style.height = oldHeight;
         $(element).animate({ height: newHeight }, 300);
+    }
+
+    static updateRefAnswer(element, isRef) {
+        if (isRef) element.classList.add(Question.Classes.RefAnswer);
+        else element.classList.remove(Question.Classes.RefAnswer);
     }
 
 
@@ -171,20 +195,23 @@ function loadAnswer(question, refAnswer = false) {
             ans.forEach(e=>{ e.value = null; });//clear all text fields
             for (let i = 0; i < Math.min(ans.length, stor.answer.length); i++) {
                 ans[i].value = stor.answer[i];
+                Question.updateRefAnswer(ans[i], refAnswer);
                 setTimeout(() => Question.updateHeight(ans[i]));
             }
             break;
         case Question.Types.SingleChoice:
         case Question.Types.MultiChoice:
-            question.question_answers.forEach(e=>e.classList.remove(Question.Classes.Selected));//clear selections
+            question.question_answers.forEach(e=> {
+                e.classList.remove(Question.Classes.Selected, Question.Classes.RefAnswer);
+            });//clear selections
             if (Object.keys(stor.answer).length === 0) break;
             let selected = question.question_answers.filter(e => stor.answer.hasOwnProperty(e.getAttribute('value')));
-            if (selected.length > 0) selected.forEach(e => e.classList.add(Question.Classes.Selected));
+            if (selected.length > 0) selected.forEach(e => {
+                e.classList.add(Question.Classes.Selected);
+                if (refAnswer) e.classList.add(Question.Classes.RefAnswer);
+            });
             break;
     }
-
-    if (refAnswer) question.question_head.classList.add(Question.Classes.RefAnswer);
-    else question.question_head.classList.remove(Question.Classes.RefAnswer);
 }
 
 function saveAnswer(/*Question*/question) {
@@ -212,6 +239,20 @@ function saveAnswer(/*Question*/question) {
     localStorage.setItem(question.id, JSON.stringify(stor));
 }
 
+function toggleTip(/*Question*/question, /*boolean*/show) {
+    let tipElement = question.question_tip;
+    if (!tipElement) return;
+    if (show) {
+        let tipStr = decrypt(question.tip);
+        if (!tipStr) return;
+        tipElement.textContent = tipStr;
+        $(tipElement).slideDown(3000).css('display', 'flex');
+    }
+    else {
+        $(tipElement).slideUp(3000, ()=>tipElement.textContent = '');
+    }
+}
+
 window.customElements.define('ce-question', Question);
 
 
@@ -231,15 +272,16 @@ function clearAllAnswers() {
 
 function toggleRefAnswers(callback) {
     window.refAnswer = !window.refAnswer;
-    if (window.refAnswer) {
-        if (!testDecryptKey()) return;
-        window.skipSaving = true;
-        [...document.getElementsByTagName('ce-question')].forEach(e=>loadAnswer(e, true));
-    }
-    else {
-        window.skipSaving = false;
-        [...document.getElementsByTagName('ce-question')].forEach(e=>loadAnswer(e));
-    }
+    window.skipSaving = window.refAnswer;
+    if (window.refAnswer && !testDecryptKey()) return;
+
+    [...document.getElementsByTagName('ce-question')].forEach(question=>{
+        //show or hide reference answer. decryptKey should have been set
+        loadAnswer(question, window.refAnswer);
+        //show or hide tip.
+        toggleTip(question, window.refAnswer);
+    });
+
     if (callback) callback();
 }
 

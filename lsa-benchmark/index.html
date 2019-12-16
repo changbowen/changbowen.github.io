@@ -84,13 +84,38 @@
             color: limegreen;
         }
 
-        .question-ref-answer::after {
+        .question-ref-answer, .question-ref-answer::before {
+            color: #00c900;
+        }
+
+        .question-tip {
+            display: none;
+            position: relative;
+            align-items: baseline;
+            white-space: pre-wrap;
+            background-color: darkgreen;
+            width: fit-content;
+            padding: 0.5em 1em 0.5em 1.2em;
+            margin: 0.6em;
+            border-radius: 0.4em;
+        }
+        .question-tip::before {
             font-family: 'Font Awesome 5 Free', sans-serif;
             font-weight: 900;
             content: '\f02d';
             position: relative;
-            left: 0.5em;
-            color: #ffda55;
+            left: -0.4em;
+        }
+        .question-tip::after {
+            content: " ";
+            position: absolute;
+            top: -19px;
+            left: 25px;
+            width: 0;
+            height: 0;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent darkgreen transparent;
         }
     </style>
 </head>
@@ -102,7 +127,7 @@
         <span style="margin-left: 0.2em">Admin Mode</span>
     </p>
     <div style="display: flex; align-items: baseline; font-size: smaller">
-        <i class="fas fa-exclamation-circle"></i>
+        <i class="fas fa-info-circle"></i>
         <div style="margin-left: 0.8em">
             <p>Your progress will be saved if you close the window.</p>
             <p>You can also save manually with CTRL + S.</p>
@@ -136,7 +161,9 @@
 
 
 <h1>Part 1</h1>
-<ce-question type="single-choice" answer="U2FsdGVkX1/KaMK/MbclCYURxeEjMJjFpbOBo/j28cc=">
+<ce-question type="single-choice"
+             tip="U2FsdGVkX1/IXPQratmhKWppyUCdzKnpqZzG+FBkNkNMiDP0+0plamPHcDIAzM2pAH0+mMHghhY8uAGu6ZOKOGl0SuCF5QoeOf62Anr1W565w86o6UpPb5Ctho1ibmRh8kF49qVBG95U+SczL1JbsmTB+7GfMZa63sqWWzHqRYzWnBkEMlOyQPVbAxzAfers0K4xwhon2m6Vef6lSKtA6uHORIWxqyFbLuvxhfInPkI="
+             answer="U2FsdGVkX1/KaMK/MbclCYURxeEjMJjFpbOBo/j28cc=">
     <h2 class="question-head">Question 1</h2>
     <div class="question-body">
         <p>Answer the question according to the conversation below.</p>
@@ -146,94 +173,94 @@
         </div>
         <p>Did <strong>B</strong> go to the meeting?</p>
     </div>
+    <div class="question-tip"></div>
     <p class="question-answer question-answer-select" value="yes">Yes</p>
     <p class="question-answer question-answer-select" value="no">No</p>
 </ce-question>
 
 <ce-question type='text'
-             answer="U2FsdGVkX1837MrJbVJIg2wTx5DGE5CnTxSLS7oKlZRGtRiIPmjoY/NZqjaztFpDcuR4abGE+homADG9/7pQ1j6/tT4GQq/dMqrT+PFbi9nidV0raEQ/taMggSBV21wp49ozh2UAe4KVnbFFLc4DwQ==">
+             tip="U2FsdGVkX19EvKdFpOgyelNon2VLmCUcLYDpsjGXEqomUORkmna1z1QWvzUX29cfL1XAs4nvzhpUUfGoGCT1ZrgkBlIqjo39tOH1UoeL8KAUDOYa4/I0HWIiGowOP51U">
     <h2 class="question-head">Question 2</h2>
     <p class="question-body">What are the top 3 hobbies you have? List some achievements (if there are any) on each
         area.</p>
-    <label>
-        <textarea class="question-answer" style="margin-bottom: 0.5em"></textarea>
-    </label>
+    <div class="question-tip"></div>
+    <textarea class="question-answer" style="margin-bottom: 0.5em"></textarea>
     <textarea class="question-answer" style="margin-bottom: 0.5em"></textarea>
     <textarea class="question-answer"></textarea>
 </ce-question>
 
 <ce-question type='text'
-             answer="U2FsdGVkX1+/4OPdPpBWskbn3Drs4pTjiFvDIptHVhfI4s09bCS9nS689tzXgFywKOBRB9BeCy1Iv0I9uROJv7k1cxIWhgGxpLKY0a2mZyzH8Y7MNlsrcA3LHOe2BNohSW6P+M90jGtThjU3iFqrAg3wvY/SUNPj9KNHCHZIO2ya8lkb02tmlrMBiZWUaTE3DW5nzpR+h++N+aF9hNgZm+Laqy5sfzoOAdZN/vGUSnzgX5MKyc/BTCpAIwqwNMse/0TEJqyZrBT8oLwAHIOVpLN1YfTC1k6WDjgWPgTNqUHqlJnwn+Uqk9+1vTkyjfVZVNdG6OPllCTGcuskvyuzormOUCeoUmNu4YY7v2YTiYAjwQjRSie6R+YloZCFxMVky+kKy0W5PlUoOqKf/D8vzw==">
+             tip="U2FsdGVkX19nf4k+cMA3HwvbXiyWLzHRvxqsAADMRkjF0+6xmFPWN1mIk6uKUdKy/xMIio0oaPi7mTp+oOGCJvYPWui1XJ6nvpYAQ/jYmtaoDY7tvHmi5Z+dhOZNdP2b5Pk/55qI5+d8FYqObSIl16YGj6++ij/QA5YsSoLodcTsPBd1WqMn1Rr30DekbXg5ZvjMgSleui96S+nZTa739+THbtbgyef2PGrqlabcjhwhhu6tGUQkX3l7y8QnaWoQEIw19thNLC3zVGMwTq8VDHy6QhsnkhZuhIF6ZHF3PP98qjpjXAQKmwCt8xUc8QNqaqXg5d1JJO33X7obI4I9gtlZrpFDQaNSI/ZcX5nQCo8="
+             answer="U2FsdGVkX19lbCXm0n7T38Ty061iV8OV8k1G9SHdxsc=">
     <h2 class="question-head">Question 3</h2>
     <p class="question-body">What does the letter P inside the network acronym TCP stand for?</p>
+    <div class="question-tip"></div>
     <textarea class="question-answer"></textarea>
 </ce-question>
 
-<ce-question type='text'>
+<ce-question type='text'
+             answer="U2FsdGVkX1/TDchDpFIQu3de4VYU2M0Ugl8nHKB52d3DcVz5VrWpNMQi6tgAbcucApih1K0vt8qMZGl9hF+yiSfhWJFIV3DKOAUOA1MVSXqgzcAWloSefrh8E3yRLFNGjUcNMHfAzGSzMFc4odVa3+nvnG7axZb5PPEBycsRFfgY6Eb7ve3y4xrXhrcY9f4DomwIyZOIgQe0cI5mhx9y2ePfgTJMk7HxPLe0ICaw9QQMftevLuEB6jt+NYxRMSfHg0G2ZkR0Z4HmefxMOQFhS+a9pDkQZIzUUl4F4txebgE=">
     <h2 class="question-head">Question 4</h2>
-    <p class="question-body">What are the first few things you check when a user complains about a folder in the share
-        is missing?</p>
+    <p class="question-body">What are the first few things you check when a user complains about a folder in the share is missing?</p>
+    <div class="question-tip"></div>
     <textarea class="question-answer"></textarea>
 </ce-question>
 
-<ce-question type='text'>
+<ce-question type='text'
+             answer="U2FsdGVkX19d3lTCLahUDqxssbGdk0pMVOOj6dVNYVhsdB4bf63JsjI/uxmoNBZJ1fXAX0J9WK59qJLcLHoGXH71G0AjCk8jbVgxPWoB4js=">
     <h2 class="question-head">Question 5</h2>
     <p class="question-body">What would you do when you encounter a problem that you never seen before?</p>
+    <div class="question-tip"></div>
     <textarea class="question-answer"></textarea>
 </ce-question>
 
-<ce-question type='text'>
+<ce-question type='text'
+             answer="U2FsdGVkX19quany0Jlk2PJdiqQKEwvMp6AkkSoqJA3Q2zz6gjEUznlc7nyNm1eXFc9XIwZPizDCFdlWssnzofM1dG5FpwINxNhUHmVBbLLrCXExnfrKOv31+1Cc337r5T8YJWRiCfRGtmMNgmBnJ+hkQ64hJkWcY/64l+X7qb865XsfsRkM4VVfSICAKtVMiaMCrcmoE2dbcG9Gd8DUMX+CixJR+5K9fr+6CdxbFKVH9yflA/MnBAaFAEwq6TV9KzOpIZZkfC7Cu6hQkI9MSUbK/vqTPUASC9louTG8QP/EAqyVnfdg3MKXcCE6t3WRbeazWotT7/i7hREQn4yMn5223njgfHCE4YTVIcYtvKaMkN/YrbHatqWyEQZpo4IMSIRICHUl3gPyPO1iqqwhIg1I6SXQIcVEXleGwhwF18s0gjdaKDCYoPxrX7Ffot4i5uvDnRnVe+4dKgEb77PMlXopr7/yJiKF9i0TchZkRQGpj4Uu+1xSyIu094za7I0k">
     <h2 class="question-head">Question 6</h2>
     <div class="question-body">
-        <p>On a PC with Windows Desktop Search enabled, what string to put in Outlook search box if you want to find the
-            emails with all the below criteria:</p>
+        <p>On a PC with Windows Desktop Search enabled, what string to put in Outlook search box if you want to find the emails with all the below criteria:</p>
         <ul>
             <li>Larger than 1 MB</li>
             <li>Received between Jan 1, 2019 and Jan 3, 2019</li>
         </ul>
     </div>
+    <div class="question-tip"></div>
     <textarea class="question-answer"></textarea>
 </ce-question>
 
-<ce-question type='text'>
+<ce-question type='text'
+             answer="U2FsdGVkX19Utyl8tWO3aBu5KBx96RjHXLC6IbSReotcovWFBNQBZ3cp5ChyAfB6RBTw7Y+yoUDo7Ezou0kHZv5OAb+cF1KegJjd3xjRGsYQRu51625Rld3NJya5R79Vhwxe7PkbfzvCGRAMK/X7tx9MfmJa6FOXlFIUDXg7MFW4rRo3RSxD5DncKataMFHfUkN4wWMkjLE/GmmIs817gan3A/jxoWljQyZ824gb+zQzWDo4ZnN49KYFtOa2Z511XLKH0xVwcJv79Ku6TJisemJ6Ldv2xfJxICmFs6Bdr03eVNJnUdR8t5mGsRVbrDnr92GoFxYEh0ieUzEemfgMAAU+FOUmW/T00iiWfNPqcc2naqabjjrJnwbmNLIkBKIj">
     <h2 class="question-head">Question 7</h2>
-    <p class="question-body"><span>During a </span>
-        <c>chkdsk</c>
-        <span> operation, the window has been frozen for about 2 hours looking like below. What could possibly be the reason?</span>
-    </p>
+    <p class="question-body"><span>During a </span><c>chkdsk</c><span> operation, the window has been frozen for about 2 hours looking like below. What could possibly be the reason?</span></p>
     <img src="res/chkdsk-frozen.png">
+    <div class="question-tip"></div>
     <textarea class="question-answer"></textarea>
 </ce-question>
 
-<ce-question type='text'>
+<ce-question type='text'
+             answer="U2FsdGVkX186xOqEb96XmbwYZyCD6yAUP4gHdGurGh3mi89tievbs4yEVonwNy3ylhKE1uEmUNnMNiesKsR5O/6sJVVsgMSD4kbLSMJ0azTmIWJIFALjcv1MWjoI/s+SuxV/1ihse0wmufnDu6C3zrlh6N0bwOOPdS0eObIRrgs9jYGq+LXVhflArbmwR4dNUOzOIKVGkZfNypYkC4BDeqvjmg9bdvf6JVtl7cJPJdZVshaA6uFT5qBgdONbyb2/0SvlMs8t4LIW4m0Q7ho4+iPWzb3snJJTOEYotTjsRT0QkyWQ37kJsDSIVTCTgeV2HbEXduvJjcMT5t/6Qcb3IvV54Oy+85Ieyh0jcaeQkMJw/SkCafML6wskUJV1LG8PvMkgqWwPn380jdRmRJSfMYz5Ti5Duz2/rKnlo73N5zR9ykam7pi3bc3s/EKzb1duonYOrXBjMsdaU48DDafoqkZ6KSpW3MZo2AOOl4VRPR9IW0RAAYqbxnp8RoCUwsjrJ8E9R+d+0oFlN4RDWBvTZDUkVe/RNT5zEwSwFTgGO7G+5aZwRPZDRAumxnCRjXSMCqXk1lINUAW4/pDbABkFXmXXtgqChT9cLQvoRAnmrK8=">
     <h2 class="question-head">Question 8</h2>
-    <p class="question-body">On the PC, find out why pinging
-        <c>www.baidu.com</c>
-        doesn't work, but Internet browsing works.
-    </p>
+    <p class="question-body">On the PC, find out why pinging <c>www.baidu.com</c> doesn't work, but Internet browsing works.</p>
+    <div class="question-tip"></div>
     <textarea class="question-answer"></textarea>
 </ce-question>
 
 <ce-question type='text'>
     <h2 class="question-head">Question 9</h2>
     <p class="question-body">On the PC, generate an HTML report of the group policy objects and save to Desktop.</p>
+    <div class="question-tip"></div>
 </ce-question>
 
-<ce-question type='text'>
+<ce-question type='text'
+             answer="U2FsdGVkX1/CaO1lbuIee57MoITv5561RCf+6/WsFrF6666n+yoWwl5kxnmxbVwrmx/VFQtJkyRg8ennvHkrDEUV4AuffVN2CbbQia47z0zue+Sc5QNlmASu+xSp1kkv3avLSZfeqBt97BkWUTta891eY6V3pD2DLEQO7pKBMMPcRpy/yBUUo9Lu6KK65vK9p8YnHOU6phoCVmqBTyx7KOAp+DlwweBvyhbdCAx+kVQJ7ypYU6B5dzTRTR44eLNF03gK9YQwDa04vjnb1zQOHO2uUU2Tf5w7t11/hiEnNEL3pRG/TAGwTi7aJVVc5pEyelHutTNA4+CLJ3AFtPBj0uO/ZGU0ErxM0nL9aYxmXVAF8iloIa8Io6g6uPsg87/7pziyMuQPkQcvKU3t+zy2563NpOAlxboGK1d6SrJf+jFacRvQU9TmawIWgKsqdzSvx82/DmreGyb2mvbMVa5hH9XhaY7j8tipQYeFCjbhERf65WH9/uo5WTeyTctP2nMfkiOWv4k/NoaLqvznDeEiZG5LObtbau8CL4Tf/k4oPwscfExOUYxLDMV3yOsnqv/bN2b8oagj8M76HTRKhKW9xAw7+uiue+nlT3W8xXPwIJSpHpu3xdxJEtFRPWQxLDX40f3pj7m+1j5mNpXOivWFYe7WBcodYNh6MyNgvjiHCZ8=">
     <h2 class="question-head">Question 10</h2>
     <div class="question-body">
-        <p>On the PC, create a one-line command in PowerShell to test whether an IP address is in the correct
-            format.</p>
-        <p>E.g.
-            <c>192.168.1.100</c>
-            is OK but
-            <c>192.168.1.256</c>
-            is not.
-        </p>
-        <i style="font-size: smaller">Hint: Use Regex and Google to complete the task. The task does not require deep
-            knowledge of Regex or PowerShell.</i>
+        <p>On the PC, create a one-line command in PowerShell to test whether an IP address is in the correct format.</p>
+        <p>E.g. <c>192.168.1.100</c> is OK but <c>192.168.1.256</c> is not.</p>
+        <i style="font-size: smaller">Hint: Use Regex and Google to complete the task. The task does not require deep knowledge of Regex or PowerShell.</i>
     </div>
-    <textarea class="question-answer" style="height: 8em; font-family: 'Shure Tech Mono', monospace"></textarea>
+    <div class="question-tip"></div>
+    <textarea class="question-answer" style="height: 8em;"></textarea>
 </ce-question>
 
 
@@ -251,12 +278,13 @@
          style="display: flex; align-items: baseline; background-color: #313131; filter: drop-shadow(0 0.125em 0.25em black);">
         <i class="fas fa-check-circle" style="color: lightgreen"></i>
         <div style="margin-left: 0.8em">
-            <p id="popup-check-text" style="white-space: pre">Operation completed!</p>
+            <p id="popup-check-text" style="white-space: pre-wrap">Operation completed!</p>
         </div>
     </div>
 </template>
 <script>
     window.skipSaving = false;
+    window.refAnswer = false;
 
     function popupCheck(text) {
         let pop = document.getElementById('popup-check').content.firstElementChild.cloneNode(true);
@@ -286,11 +314,11 @@
     };
 
     window.onload = function () {
-        [...document.querySelectorAll('.question-answer:not(.question-answer-select)')].forEach(a=>Question.updateHeight(a));
+        [...document.querySelectorAll('.question-answer:not(.question-answer-select)')].forEach(a => Question.updateHeight(a));
     };
 
-    function getEncryptedAnswer(answer) {
-        return encrypt(JSON.stringify(answer));
+    function getEncryptedAnswer(answer, isJson = false) {
+        return encrypt(isJson ? JSON.stringify(answer) : answer);
     }
 </script>
 </body>
