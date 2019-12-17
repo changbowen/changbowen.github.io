@@ -49,6 +49,7 @@ class Question extends HTMLElement {
     };
 
     static AutoSizeTimer;
+    static BaseAnimDuration = 300;
 
     /**
      * The question header element
@@ -89,7 +90,7 @@ class Question extends HTMLElement {
         element.style.height = initial;
         let newHeight = (element.scrollHeight - 18) + 'px';
         element.style.height = oldHeight;
-        $(element).animate({ height: newHeight }, 300);
+        $(element).animate({ height: newHeight }, this.BaseAnimDuration);
     }
 
     static updateRefAnswer(element, isRef) {
@@ -250,10 +251,10 @@ function toggleTip(/*Question*/question, /*boolean*/show) {
             tipElement.append(ele.cloneNode(true));
         }
         tipElement.querySelector('#popup-tip-text').textContent = tipStr;
-        $(tipElement).slideDown(300);
+        $(tipElement).slideDown(this.BaseAnimDuration);
     }
     else {
-        $(tipElement).slideUp(300, ()=>tipElement.innerHTML = '');
+        $(tipElement).slideUp(this.BaseAnimDuration, ()=>tipElement.innerHTML = '');
     }
 }
 
@@ -293,7 +294,7 @@ function toggleRefAnswers(callback) {
             delay += 100;
         }));
     });
-    Promise.all(pros).then(()=>setTimeout(callback, 400));
+    Promise.all(pros).then(()=>setTimeout(callback, this.BaseAnimDuration + 100));
 }
 
 function testDecryptKey() {
