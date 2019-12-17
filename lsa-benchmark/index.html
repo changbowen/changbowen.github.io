@@ -38,7 +38,7 @@
             border-width: 0;
             border-radius: 0.4em;
             background-color: #ffffff33;
-            font-size: 0.9em;
+            font-size: 1em;
             resize: none;
             overflow: hidden;
         }
@@ -81,46 +81,47 @@
 
         .question-answer-selected::before {
             content: "\f14a";
-            color: limegreen;
+            color: deepskyblue;
         }
 
-        .question-ref-answer, .question-ref-answer::before {
-            color: #00c900;
+        .question-ref-answer {
+            color: #cbe0cb;
+            background-color: #274227;
+            border-radius: 0.4em;
+        }
+        .question-ref-answer::before {
+            color: limegreen;
         }
 
         .question-tip {
             display: none;
-            position: relative;
-            align-items: baseline;
-            white-space: pre-wrap;
-            background-color: darkgreen;
             width: fit-content;
-            padding: 0.5em 1em 0.5em 1.2em;
-            margin: 0.6em;
-            border-radius: 0.4em;
-        }
-        .question-tip::before {
-            font-family: 'Font Awesome 5 Free', sans-serif;
-            font-weight: 900;
-            content: '\f02d';
-            position: relative;
-            left: -0.4em;
-        }
-        .question-tip::after {
-            content: " ";
-            position: absolute;
-            top: -19px;
-            left: 25px;
-            width: 0;
-            height: 0;
-            border-width: 10px;
-            border-style: solid;
-            border-color: transparent transparent darkgreen transparent;
+            margin-bottom: 1em;
+            font-size: 0.8em;
         }
     </style>
 </head>
 
 <body>
+<template id="popup-simple">
+    <div class="panel"
+         style="display: flex; align-items: baseline; background-color: #313131; filter: drop-shadow(0 0.125em 0.25em black);">
+        <i id="popup-simple-icon" style="color: lightgreen"></i>
+        <div style="margin-left: 0.8em">
+            <p id="popup-simple-text" style="white-space: pre-wrap">Operation completed!</p>
+        </div>
+    </div>
+</template>
+<template id="popup-tip">
+    <div style="position: relative; width: 0; left: 3%; border: 10px solid; border-color: transparent transparent darkgreen transparent"></div>
+    <div style="display: flex; align-items: baseline; background-color: darkgreen; width: fit-content; border-radius: 0.4em; padding: 0.5em 1em 0.5em 1em;">
+        <i class="fas fa-book"></i>
+        <div style="margin-left: 0.8em">
+            <p id="popup-tip-text" style="white-space: pre-wrap"></p>
+        </div>
+    </div>
+</template>
+
 <div class="panel" style="position: fixed; top: 0.5em; right: 0.5em; padding: 0.3em 0.7em;">
     <p class="hidden" style="color: #ff7777; font-size: larger">
         <i class="fas fa-exclamation-triangle"></i>
@@ -150,7 +151,7 @@
     <i class="button round-button fas fa-file-download hidden"
        style="background-color: #856827; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
        title="Export answers"
-       onclick="exportAllAnswers()">
+       onclick="popupCheck('Not implemented yet.', 'fas fa-exclamation-circle', 'orange')">
     </i>
     <i class="button round-button fas fa-save"
        style="background-color: #207829; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
@@ -199,7 +200,8 @@
 </ce-question>
 
 <ce-question type='text'
-             answer="U2FsdGVkX1/TDchDpFIQu3de4VYU2M0Ugl8nHKB52d3DcVz5VrWpNMQi6tgAbcucApih1K0vt8qMZGl9hF+yiSfhWJFIV3DKOAUOA1MVSXqgzcAWloSefrh8E3yRLFNGjUcNMHfAzGSzMFc4odVa3+nvnG7axZb5PPEBycsRFfgY6Eb7ve3y4xrXhrcY9f4DomwIyZOIgQe0cI5mhx9y2ePfgTJMk7HxPLe0ICaw9QQMftevLuEB6jt+NYxRMSfHg0G2ZkR0Z4HmefxMOQFhS+a9pDkQZIzUUl4F4txebgE=">
+             tip="U2FsdGVkX1+qoAidngNrrLVeXZTy0tddWXxPX543xjVAN+x+6T54jlcAfJx1aMhBW54EEiYtBDBKs/t9iqceov4DXiBUBCM/djaPunYVz+2txeOP7jv0Dszcm/PAqrLN5n1FcHTlMmks/zb+dk7qUrRxuz4HXsKTc1SLT/fuYmPVJieKf0hHPv04aBgE8KqVt5nGUKkhYmdVWZOejRYlmbpS4Hx19xIKxWvsGnQ8cx8KLqs6ixpMhLgMSC8jlaXL+mC6swU7zjJ3AeBq2OgUdw=="
+             answer="U2FsdGVkX1+tM3Gy1GEH51Zd4f6JpUq6BxPR/98znWsQwfLQ9NJNjvlGnptMUIEJ0a+3dRybXEjWJCDQRfjTiUNwCjsO5x0z5nyKtzGGz4FsArpYMMkBwJSXwib6hAe2">
     <h2 class="question-head">Question 4</h2>
     <p class="question-body">What are the first few things you check when a user complains about a folder in the share is missing?</p>
     <div class="question-tip"></div>
@@ -207,7 +209,8 @@
 </ce-question>
 
 <ce-question type='text'
-             answer="U2FsdGVkX19d3lTCLahUDqxssbGdk0pMVOOj6dVNYVhsdB4bf63JsjI/uxmoNBZJ1fXAX0J9WK59qJLcLHoGXH71G0AjCk8jbVgxPWoB4js=">
+             tip="U2FsdGVkX1+RlBBGotYJOZfacFSKyjVQsoIEz4plcYZGXdshUys96Vmo+Sk4o4LaVLippZGAFrpmLvrY2c4Tdtkh2VcTNkwDtoAnfqWzkTcSG64wkWm77oJbEMJiZRdfxSIicppITzu4zOitx87Zm5VsahMGSQtx8qfC+HhP6WHY6ZRY/7UU+kBvaooZu/smfkCBAITJwV8wkepWWkBRu/jq27TQEKD/+NpymmdFq3Y="
+             answer="U2FsdGVkX18wB9h8nfydyvtZgySbknITXgADC0eHyCs=">
     <h2 class="question-head">Question 5</h2>
     <p class="question-body">What would you do when you encounter a problem that you never seen before?</p>
     <div class="question-tip"></div>
@@ -215,7 +218,8 @@
 </ce-question>
 
 <ce-question type='text'
-             answer="U2FsdGVkX19quany0Jlk2PJdiqQKEwvMp6AkkSoqJA3Q2zz6gjEUznlc7nyNm1eXFc9XIwZPizDCFdlWssnzofM1dG5FpwINxNhUHmVBbLLrCXExnfrKOv31+1Cc337r5T8YJWRiCfRGtmMNgmBnJ+hkQ64hJkWcY/64l+X7qb865XsfsRkM4VVfSICAKtVMiaMCrcmoE2dbcG9Gd8DUMX+CixJR+5K9fr+6CdxbFKVH9yflA/MnBAaFAEwq6TV9KzOpIZZkfC7Cu6hQkI9MSUbK/vqTPUASC9louTG8QP/EAqyVnfdg3MKXcCE6t3WRbeazWotT7/i7hREQn4yMn5223njgfHCE4YTVIcYtvKaMkN/YrbHatqWyEQZpo4IMSIRICHUl3gPyPO1iqqwhIg1I6SXQIcVEXleGwhwF18s0gjdaKDCYoPxrX7Ffot4i5uvDnRnVe+4dKgEb77PMlXopr7/yJiKF9i0TchZkRQGpj4Uu+1xSyIu094za7I0k">
+             tip="U2FsdGVkX1+xK8L2a1bB3O4A9+XUjqWMnqE1xpXkEo1RVQr0kNC433YSokVh9aTzzxm1varnrNg7x7+5qPSVNg5Uz7sx1qv9W9eQfr8e/06UNP5eeMYeXNn3ZYu0DHpjPQs+ckKXf6LbeZflQloxuqQmte7m73eMUAbYXaIdkftxsON9iSbHwpMvIcETMzChd8DnnFYOopMMxfjkt4lT/le68xdo5P3GglA+mJiqa5vEkW3sEtQPAI23WYSRCYt3m1ltT4t6NacrDEiXfaZigIZxeG0f1MwlLrmRwbmxOAV1LHbKo8rCHXVl4l7ucBr4wkU8Sh2s9nYkJ1RsLOSkx8eYu0ZeJzkhixbCAumNDlulSHNpfYzbMI4UBk5YBvZs"
+             answer="U2FsdGVkX18q9xPMTFbqrq/yGmEKMEJ9V9ZbBXko7iLP0JNJgZqdO4Zfs3bn+64+hPEzCqpmw53WNjJLHT+dtwSJd/FaueMgplusUQ7I4ZsVMszZXwTWTRgnaXbQ/aW2CHxanZE6vDOQV33UuKqHcYyK+8+M+mmLPKQX3tj+atU=">
     <h2 class="question-head">Question 6</h2>
     <div class="question-body">
         <p>On a PC with Windows Desktop Search enabled, what string to put in Outlook search box if you want to find the emails with all the below criteria:</p>
@@ -229,7 +233,8 @@
 </ce-question>
 
 <ce-question type='text'
-             answer="U2FsdGVkX19Utyl8tWO3aBu5KBx96RjHXLC6IbSReotcovWFBNQBZ3cp5ChyAfB6RBTw7Y+yoUDo7Ezou0kHZv5OAb+cF1KegJjd3xjRGsYQRu51625Rld3NJya5R79Vhwxe7PkbfzvCGRAMK/X7tx9MfmJa6FOXlFIUDXg7MFW4rRo3RSxD5DncKataMFHfUkN4wWMkjLE/GmmIs817gan3A/jxoWljQyZ824gb+zQzWDo4ZnN49KYFtOa2Z511XLKH0xVwcJv79Ku6TJisemJ6Ldv2xfJxICmFs6Bdr03eVNJnUdR8t5mGsRVbrDnr92GoFxYEh0ieUzEemfgMAAU+FOUmW/T00iiWfNPqcc2naqabjjrJnwbmNLIkBKIj">
+             tip="U2FsdGVkX1+91oA9TlURSQGeHbCPAawClVjW5y/PfFFcyhLlnjNcbwQZ9L1cWEgbcNZX/K+DSj6RvD4kJHW0J0O2/QxtqCCfi5OwqkeNy3jLm4GfmJTrHWxmoRBmz2F7eswiAwQ80IFF9Wfxmv9IVcQz8j1/PdsubvCEZMlKzUUJ3MaocECn4QaMzZ0mVkJSV5zrQ9XBiTTX6sySaA2BEmmRHsRHqtMByE5qJy8FKqA07CiTFfL3/Scobo0+4J6el/TeFuumFYso8w8/a2VPbVU3WiFlzGFqXejPXYSNfX3OTjhGreY3M7F4eT/Vo+atIIAKXdDQcXfhc8+u1s/YHzxb632Bl7wnKPfImsKyPPE="
+             answer="U2FsdGVkX1+YbzQuyeGfIHsarWegsWps5+gICkRIz8i6v9QP09jww9BwQHHvPEPDvFnWxELeA9+dyNJ46+8LWkeiwI92znqeOqgzqsu8FVLminqXlnsR3aStHZdnfnu0ujwBnKlkAfuWyFyQn7fUWA==">
     <h2 class="question-head">Question 7</h2>
     <p class="question-body"><span>During a </span><c>chkdsk</c><span> operation, the window has been frozen for about 2 hours looking like below. What could possibly be the reason?</span></p>
     <img src="res/chkdsk-frozen.png">
@@ -238,21 +243,24 @@
 </ce-question>
 
 <ce-question type='text'
-             answer="U2FsdGVkX186xOqEb96XmbwYZyCD6yAUP4gHdGurGh3mi89tievbs4yEVonwNy3ylhKE1uEmUNnMNiesKsR5O/6sJVVsgMSD4kbLSMJ0azTmIWJIFALjcv1MWjoI/s+SuxV/1ihse0wmufnDu6C3zrlh6N0bwOOPdS0eObIRrgs9jYGq+LXVhflArbmwR4dNUOzOIKVGkZfNypYkC4BDeqvjmg9bdvf6JVtl7cJPJdZVshaA6uFT5qBgdONbyb2/0SvlMs8t4LIW4m0Q7ho4+iPWzb3snJJTOEYotTjsRT0QkyWQ37kJsDSIVTCTgeV2HbEXduvJjcMT5t/6Qcb3IvV54Oy+85Ieyh0jcaeQkMJw/SkCafML6wskUJV1LG8PvMkgqWwPn380jdRmRJSfMYz5Ti5Duz2/rKnlo73N5zR9ykam7pi3bc3s/EKzb1duonYOrXBjMsdaU48DDafoqkZ6KSpW3MZo2AOOl4VRPR9IW0RAAYqbxnp8RoCUwsjrJ8E9R+d+0oFlN4RDWBvTZDUkVe/RNT5zEwSwFTgGO7G+5aZwRPZDRAumxnCRjXSMCqXk1lINUAW4/pDbABkFXmXXtgqChT9cLQvoRAnmrK8=">
+             tip="U2FsdGVkX1+eNaRVoqXg64rRHqUPfEYPAK3dWqSZYccqn2B+6q1HebXYPqoJBVdlqYjVUNCeceqCNPe3iteUgV7XG8QNmNQ5+Eu6DStXWr/myQqg5XC+Fbh7gZ9/DBRmiYPX6YoqPX3WFGdTRBZy7QmM3IBIk9F8KrzyrEimkaY="
+             answer="U2FsdGVkX18sm16UuYOUbmNaSA+8T/rewNi4QTFlLCJU+NkAoXANQXziQAVXx0KfAezMda0Go2DucI2MIg2D/K1wH+DdQlqs0h8IplF08SgIYF1HuQ0aphiQPak/kt+7kcOEtkcyToveL7QAu8/petGPUsjuk1/m3wOR3ygXQWFLKmk1yHuCe8pYoQZTxlaqqgrEMxa+DM0to7Br7EiZvNpOlp1vpEvxCJC9cRE7Rv92utsS05B+EJ8FM0OmMz0dn+HvHwAT9SLQXe9q9HOtmQ==">
     <h2 class="question-head">Question 8</h2>
     <p class="question-body">On the PC, find out why pinging <c>www.baidu.com</c> doesn't work, but Internet browsing works.</p>
     <div class="question-tip"></div>
     <textarea class="question-answer"></textarea>
 </ce-question>
 
-<ce-question type='text'>
+<ce-question type='text'
+             tip="U2FsdGVkX18yxaOvPKG1cAa2Z5mLzwuake0rbfk3FYs0Lr3SD6Yf5+U+j3wi7kCOg8pxJhAtu7oIPkDCKXH0nB1G5hB/a9L9K0vy+R6imlU=">
     <h2 class="question-head">Question 9</h2>
     <p class="question-body">On the PC, generate an HTML report of the group policy objects and save to Desktop.</p>
     <div class="question-tip"></div>
 </ce-question>
 
 <ce-question type='text'
-             answer="U2FsdGVkX1/CaO1lbuIee57MoITv5561RCf+6/WsFrF6666n+yoWwl5kxnmxbVwrmx/VFQtJkyRg8ennvHkrDEUV4AuffVN2CbbQia47z0zue+Sc5QNlmASu+xSp1kkv3avLSZfeqBt97BkWUTta891eY6V3pD2DLEQO7pKBMMPcRpy/yBUUo9Lu6KK65vK9p8YnHOU6phoCVmqBTyx7KOAp+DlwweBvyhbdCAx+kVQJ7ypYU6B5dzTRTR44eLNF03gK9YQwDa04vjnb1zQOHO2uUU2Tf5w7t11/hiEnNEL3pRG/TAGwTi7aJVVc5pEyelHutTNA4+CLJ3AFtPBj0uO/ZGU0ErxM0nL9aYxmXVAF8iloIa8Io6g6uPsg87/7pziyMuQPkQcvKU3t+zy2563NpOAlxboGK1d6SrJf+jFacRvQU9TmawIWgKsqdzSvx82/DmreGyb2mvbMVa5hH9XhaY7j8tipQYeFCjbhERf65WH9/uo5WTeyTctP2nMfkiOWv4k/NoaLqvznDeEiZG5LObtbau8CL4Tf/k4oPwscfExOUYxLDMV3yOsnqv/bN2b8oagj8M76HTRKhKW9xAw7+uiue+nlT3W8xXPwIJSpHpu3xdxJEtFRPWQxLDX40f3pj7m+1j5mNpXOivWFYe7WBcodYNh6MyNgvjiHCZ8=">
+             tip="U2FsdGVkX18+/ObFNgoJoehI+cWkDl9WYQLe4EfrmR/p7OubmTfidwKwt7rC2sm3CFuOGk42SSoNbiDM7JNUVykxeN6r9rOz/kQmtkZV38dGtIO0N4FA3eeB/pEqJfXI9qscs5RZmmjS9jaR1e6P0TAbVtJNpbO2QBd9xMW1jzyyPygGb7xGzIuI1kVKAvPH0QZb+srZdGqLNDhwgZm/Umc+fF1ZI13MAUSmI9Zj93LMAO5spaO51Dp5T5rfUfZuhYIQJyWU8HMt9o2Le5aWkir26wxaDx7YrfdUeU4SxCuzAa3yGXD3in54+opBdrNRvznqd+Y+f0i1K4E6K+e0wKQDaDkzwvJSk0MeDcty4+CZnWccPtTGtfQjaEc0X4xZECT0YclwICGbr57d3Fwu1ludX8zSdi6hW48qTEP5pvhp99z2QZJm14Rx6p6WlpD+z9Vezd3TgYieXqFvBIjQF7miUTmi8r/Hco6wekngYN8="
+             answer="U2FsdGVkX1/Tnvlez/6NWcbk3H/UluA/28Ym9rF/w0AwgziKpHpxOwNmUjMcK+gZ0csssJ9aoUaW7KJ1vj+a1SYlkmDeManzC78VxUDixnmUymxMKBPS51apH9qyw8pbvr7RHT4Mc9Y5x5g1AO6V/guv0kKKAmuUv0wSccdQC1FYhQAP+efVYwMSeD6fqUzZ">
     <h2 class="question-head">Question 10</h2>
     <div class="question-body">
         <p>On the PC, create a one-line command in PowerShell to test whether an IP address is in the correct format.</p>
@@ -273,22 +281,16 @@
     <div class="question-answer question-answer-select" value="eat dirt"><span style="margin-left: 0.4em">Eat some dirt.</span></div>
 </ce-question>-->
 
-<template id="popup-check">
-    <div class="panel"
-         style="display: flex; align-items: baseline; background-color: #313131; filter: drop-shadow(0 0.125em 0.25em black);">
-        <i class="fas fa-check-circle" style="color: lightgreen"></i>
-        <div style="margin-left: 0.8em">
-            <p id="popup-check-text" style="white-space: pre-wrap">Operation completed!</p>
-        </div>
-    </div>
-</template>
 <script>
     window.skipSaving = false;
     window.refAnswer = false;
 
-    function popupCheck(text) {
-        let pop = document.getElementById('popup-check').content.firstElementChild.cloneNode(true);
-        pop.querySelector('#popup-check-text').textContent = text;
+    function popupCheck(text, iconClass = 'fas fa-check-circle', iconColor = 'lightgreen') {
+        let pop = document.getElementById('popup-simple').content.firstElementChild.cloneNode(true);
+        let icon = pop.querySelector('#popup-simple-icon');
+        icon.className = iconClass;
+        icon.style.color = iconColor;
+        pop.querySelector('#popup-simple-text').textContent = text;
         NotifyPop.notify(2000, pop);
     }
 

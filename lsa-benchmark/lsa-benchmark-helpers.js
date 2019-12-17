@@ -110,21 +110,21 @@ class Question extends HTMLElement {
             //post init
             switch (this.type) {
                 case Question.Types.Text:
-                    this.question_answers.forEach(e => {
-                        e.addEventListener('scroll', ee => ee.target.scrollTop = 0);//prevent scrolling due to height auto growth
-                        e.addEventListener('input', ee => {
+                    this.question_answers.forEach(ans => {
+                        ans.addEventListener('scroll', e => e.target.scrollTop = 0);//prevent scrolling due to height auto growth
+                        ans.addEventListener('input', e => {
                             //auto grow height
-                            ee.target.scrollTop = 0;
+                            e.target.scrollTop = 0;
                             clearTimeout(Question.AutoSizeTimer);//reduce resize calls when typing
-                            Question.AutoSizeTimer = setTimeout(()=>Question.updateHeight(ee.target), 200);
+                            Question.AutoSizeTimer = setTimeout(()=>Question.updateHeight(e.target), 200);
                         });
-                        e.addEventListener('change', () => saveAnswer(this));
+                        ans.addEventListener('change', () => saveAnswer(this));
                     });
                     break;
                 case Question.Types.SingleChoice:
-                    for (const choice of this.getElementsByClassName(Question.Classes.Answer)) {
-                        choice.style.cursor = 'pointer';
-                        choice.addEventListener('click', e => {
+                    this.question_answers.forEach(ans => {
+                        ans.style.cursor = 'pointer';
+                        ans.addEventListener('click', e => {
                             //set selection status
                             this.question_answers.forEach(c => {
                                 c.classList.remove(Question.Classes.Selected);
@@ -133,18 +133,18 @@ class Question extends HTMLElement {
                             //save answer
                             saveAnswer(this);
                         });
-                    }
+                    });
                     break;
                 case Question.Types.MultiChoice:
-                    for (const choice of this.getElementsByClassName(Question.Classes.Answer)) {
-                        choice.style.cursor = 'pointer';
-                        choice.addEventListener('click', e => {
+                    this.question_answers.forEach(ans => {
+                        ans.style.cursor = 'pointer';
+                        ans.addEventListener('click', e => {
                             //set selection status
                             e.currentTarget.classList.toggle(Question.Classes.Selected);
                             //save answer
                             saveAnswer(this);
                         });
-                    }
+                    });
                     break;
             }
         });
@@ -245,11 +245,15 @@ function toggleTip(/*Question*/question, /*boolean*/show) {
     if (show) {
         let tipStr = decrypt(question.tip);
         if (!tipStr) return;
-        tipElement.textContent = tipStr;
-        $(tipElement).slideDown(3000).css('display', 'flex');
+        //create element from template
+        for (const ele of document.getElementById('popup-tip').content.children) {
+            tipElement.append(ele.cloneNode(true));
+        }
+        tipElement.querySelector('#popup-tip-text').textContent = tipStr;
+        $(tipElement).slideDown(300);
     }
     else {
-        $(tipElement).slideUp(3000, ()=>tipElement.textContent = '');
+        $(tipElement).slideUp(300, ()=>tipElement.innerHTML = '');
     }
 }
 
@@ -275,11 +279,13 @@ function toggleRefAnswers(callback) {
     window.skipSaving = window.refAnswer;
     if (window.refAnswer && !testDecryptKey()) return;
 
+    let delay = 0;
     [...document.getElementsByTagName('ce-question')].forEach(question=>{
         //show or hide reference answer. decryptKey should have been set
         loadAnswer(question, window.refAnswer);
         //show or hide tip.
-        toggleTip(question, window.refAnswer);
+        setTimeout(()=>toggleTip(question, window.refAnswer), delay);
+        delay += 100;
     });
 
     if (callback) callback();
