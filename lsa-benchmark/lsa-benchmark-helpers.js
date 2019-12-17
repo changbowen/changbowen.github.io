@@ -280,15 +280,20 @@ function toggleRefAnswers(callback) {
     if (window.refAnswer && !testDecryptKey()) return;
 
     let delay = 0;
-    [...document.getElementsByTagName('ce-question')].forEach(question=>{
-        //show or hide reference answer. decryptKey should have been set
-        loadAnswer(question, window.refAnswer);
-        //show or hide tip.
-        setTimeout(()=>toggleTip(question, window.refAnswer), delay);
-        delay += 100;
+    let pros = [];
+    [...document.getElementsByTagName('ce-question')].forEach(question=> {
+        pros.push(new Promise((resolve, reject) => {
+            setTimeout(() => {
+                //show or hide reference answer. decryptKey should have been set
+                loadAnswer(question, window.refAnswer);
+                //show or hide tip.
+                toggleTip(question, window.refAnswer);
+                resolve();
+            }, delay);
+            delay += 100;
+        }));
     });
-
-    if (callback) callback();
+    Promise.all(pros).then(()=>setTimeout(callback, 400));
 }
 
 function testDecryptKey() {

@@ -51,6 +51,7 @@
             display: flex;
             align-items: center;
             width: fit-content;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .question-answer-select {
@@ -143,10 +144,13 @@
     <i class="button round-button fas fa-file-import hidden"
        style="background-color: #304078; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
        title="Toggle reference answers"
-       onclick="toggleRefAnswers(()=>
-            popupCheck(window.refAnswer ?
-                'Showing reference answers!\r\nAuto save disabled.' :
-                'Showing saved answers!\r\nAuto save enabled.'))">
+       onclick="(function(i) {
+           i.classList.add('disabled');
+           popupCheck(window.refAnswer ?
+               'Showing reference answers!\r\nAuto save disabled.' :
+               'Showing saved answers!\r\nAuto save enabled.');
+           toggleRefAnswers(() => i.classList.remove('disabled'));
+       })(this)">
     </i>
     <i class="button round-button fas fa-file-download hidden"
        style="background-color: #856827; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
