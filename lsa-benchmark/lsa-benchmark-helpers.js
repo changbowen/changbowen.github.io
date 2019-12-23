@@ -276,25 +276,25 @@ function clearAllAnswers() {
 }
 
 function toggleRefAnswers(callback) {
-    window.refAnswer = !window.refAnswer;
-    window.skipSaving = window.refAnswer;
-    if (window.refAnswer && !testDecryptKey()) return;
-
+    if (!window.refAnswer && !testDecryptKey()) return;
     let delay = 0;
     let pros = [];
     [...document.getElementsByTagName('ce-question')].forEach(question=> {
         pros.push(new Promise((resolve, reject) => {
             setTimeout(() => {
                 //show or hide reference answer. decryptKey should have been set
-                loadAnswer(question, window.refAnswer);
+                loadAnswer(question, !window.refAnswer);
                 //show or hide tip.
-                toggleTip(question, window.refAnswer);
+                toggleTip(question, !window.refAnswer);
                 resolve();
             }, delay);
             delay += 100;
         }));
     });
-    Promise.all(pros).then(()=>setTimeout(callback, this.BaseAnimDuration + 100));
+    Promise.all(pros).then(()=>{
+        window.refAnswer = !window.refAnswer;
+        window.skipSaving = window.refAnswer;
+    }).then(()=>setTimeout(callback, this.BaseAnimDuration + 100));
 }
 
 function testDecryptKey() {
