@@ -105,7 +105,7 @@ class Question extends HTMLElement {
 
         //wait till element contents are rendered
         setTimeout(() => {
-            if (!this.id) this.id = 'q-' + this.question_head.textContent.trim().hashCode();
+            if (!this.id) this.id = 'q-' + this.question_bodies.map(b=>b.textContent.trim()).join('\n').hashCode();
             //load saved answer
             loadAnswer(this);
             //post init
@@ -119,7 +119,7 @@ class Question extends HTMLElement {
                             clearTimeout(Question.AutoSizeTimer);//reduce resize calls when typing
                             Question.AutoSizeTimer = setTimeout(()=>Question.updateHeight(e.target), 200);
                         });
-                        ans.addEventListener('change', () => saveAnswer(this));
+                        ans.addEventListener('change', e => saveAnswer(this));
                     });
                     break;
                 case Question.Types.SingleChoice:
