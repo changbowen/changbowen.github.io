@@ -85,7 +85,7 @@
             color: deepskyblue;
         }
 
-        .question-ref-answer {
+        textarea.question-ref-answer {
             color: #cbe0cb;
             background-color: #274227;
             border-radius: 0.4em;
@@ -139,7 +139,7 @@
     <i class="button round-button fas fa-trash-alt"
        style="background-color: #781111; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
        title="Clear everything"
-       onclick="clearAllAnswers()">
+       onclick="Question.clearAllAnswers()">
     </i>
     <i class="button round-button fas fa-file-import hidden"
        style="background-color: #304078; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
@@ -149,7 +149,7 @@
            popupCheck(window.refAnswer ?
                'Showing reference answers!\r\nAuto save disabled.' :
                'Showing saved answers!\r\nAuto save enabled.');
-           toggleRefAnswers(() => i.classList.remove('disabled'));
+           Question.toggleRefAnswers(() => i.classList.remove('disabled'));
        })(this)">
     </i>
     <i class="button round-button fas fa-file-download hidden"
@@ -160,7 +160,7 @@
     <i class="button round-button fas fa-save"
        style="background-color: #207829; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
        title="Save answers locally"
-       onclick="saveAllAnswers(()=>popupCheck('Answers saved!'))">
+       onclick="Question.saveAllAnswers(()=>popupCheck('Answers saved!'))">
     </i>
 </div>
 
@@ -309,19 +309,19 @@
     }
 
     //check if key exists and warn
-    if (testDecryptKey()) {
+    if (Question.testDecryptKey()) {
         [...document.getElementsByClassName('hidden')].forEach(e => e.classList.remove('hidden'));
     }
 
     document.onkeydown = function (e) {
         if (e.ctrlKey && e.key === 's') {
             e.preventDefault();
-            saveAllAnswers(() => popupCheck('Answers saved!'));
+            Question.saveAllAnswers(() => popupCheck('Answers saved!'));
         }
     };
 
     window.onbeforeunload = function () {
-        saveAllAnswers();
+        Question.saveAllAnswers();
     };
 
     window.onload = function () {
@@ -336,7 +336,7 @@
     };
 
     function getEncryptedAnswer(answer, isJson = false) {
-        return encrypt(isJson ? JSON.stringify(answer) : answer);
+        return Question.encrypt(isJson ? JSON.stringify(answer) : answer);
     }
 </script>
 </body>

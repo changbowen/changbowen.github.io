@@ -48,7 +48,7 @@ class Question extends HTMLElement {
         MultiChoice: 'multi-choice',
     };
 
-    static AutoSizeTimer;
+    static AutoSizeTimer = new Map();
     static BaseAnimDuration = 300;
 
     /**
@@ -85,17 +85,94 @@ class Question extends HTMLElement {
     }
 
     static updateHeight(element, initial = '1.6em') {
-        //A hack to get the correct scrollHeight. Otherwise scrollHeight is not shrinking.
-        let oldHeight = $(element).height() + 'px';
-        element.style.height = initial;
-        let newHeight = (element.scrollHeight - 18) + 'px';
-        element.style.height = oldHeight;
-        $(element).animate({ height: newHeight }, this.BaseAnimDuration);
+        clearTimeout(Question.AutoSizeTimer.get(element));//reduce resize calls when typing
+        Question.AutoSizeTimer.set(element, setTimeout(() => {
+            //A hack to get the correct scrollHeight. Otherwise scrollHeight is not shrinking.
+            let oldHeight = $(element).height() + 'px';
+            element.style.height = initial;
+            let newHeight = (element.scrollHeight - 18) + 'px';
+            element.style.height = oldHeight;
+            $(element).animate({ height: newHeight }, Question.BaseAnimDuration, 'swing', ()=>Question.AutoSizeTimer.delete(element));
+        }, 200));
     }
 
-    static updateRefAnswer(element, isRef) {
-        if (isRef) element.classList.add(Question.Classes.RefAnswer);
-        else element.classList.remove(Question.Classes.RefAnswer);
+    static saveAllAnswers(callback) {
+        if (window.skipSaving) return;
+        [...document.getElementsByTagName('ce-question')].forEach(e=>e.saveAnswer());
+        if (callback) callback()
+    }
+
+
+    static clearAllAnswers() {
+        if (confirm('Are you sure to clear all saved answers and reload? There is no going back!')) {
+            window.skipSaving = true;
+            localStorage.clear();
+            location.reload();
+        }
+    }
+
+    static toggleRefAnswers(callback) {
+        if (!window.refAnswer && !Question.testDecryptKey()) return;
+        let delay = 0;
+        let pros = [];
+        [...document.getElementsByTagName('ce-question')].forEach(question=> {
+            pros.push(new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    //show or hide reference answer. decryptKey should have been set
+                    question.loadAnswer(!window.refAnswer);
+                    //show or hide tip.
+                    question.toggleTip(!window.refAnswer);
+                    resolve();
+                }, delay);
+                delay += 100;
+            }));
+        });
+        Promise.all(pros).then(()=>{
+            window.refAnswer = !window.refAnswer;
+            window.skipSaving = window.refAnswer;
+        }).then(()=>setTimeout(callback, this.BaseAnimDuration + 100));
+    }
+
+    static testDecryptKey() {
+        while (true) {
+            //check if key is set
+            if (!localStorage.getItem('decryptKey')) {
+                let key = prompt('Input the decryption key if you have it.');
+                if (!key) break;
+                localStorage.setItem('decryptKey', key);
+            }
+            //test if key is correct
+            let key = localStorage.getItem('decryptKey');
+            if (CryptoJS.AES.decrypt('U2FsdGVkX18rL1WTaSQeSym4/dND2ADvi3dOQR3eTsM=', key).toString(CryptoJS.enc.Utf8) === 'test')
+                return true;
+            else {
+                localStorage.removeItem('decryptKey');
+                alert('Invalid decryption key.');
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Assumes decryptKey is set.
+     * @param {string} gibberish The encrypted string.
+     */
+    static decrypt(gibberish) {
+        if (!gibberish) return null;
+        let key = localStorage.getItem('decryptKey');
+        if (!key) return null;
+        return CryptoJS.AES.decrypt(gibberish, key).toString(CryptoJS.enc.Utf8);
+    }
+
+    /**
+     * Assumes decryptKey is set.
+     * @param {string} text The string to encrypt.
+     */
+    static encrypt(text) {
+        if (!text) return null;
+        let key = localStorage.getItem('decryptKey');
+        if (!key) return null;
+        return CryptoJS.AES.encrypt(text, key).toString();
     }
 
 
@@ -107,7 +184,7 @@ class Question extends HTMLElement {
         setTimeout(() => {
             if (!this.id) this.id = 'q-' + this.question_bodies.map(b=>b.textContent.trim()).join('\n').hashCode();
             //load saved answer
-            loadAnswer(this);
+            this.loadAnswer();
             //post init
             switch (this.type) {
                 case Question.Types.Text:
@@ -116,10 +193,9 @@ class Question extends HTMLElement {
                         ans.addEventListener('input', e => {
                             //auto grow height
                             e.target.scrollTop = 0;
-                            clearTimeout(Question.AutoSizeTimer);//reduce resize calls when typing
-                            Question.AutoSizeTimer = setTimeout(()=>Question.updateHeight(e.target), 200);
+                            Question.updateHeight(e.target);
                         });
-                        ans.addEventListener('change', e => saveAnswer(this));
+                        ans.addEventListener('change', e => this.saveAnswer());
                     });
                     break;
                 case Question.Types.SingleChoice:
@@ -132,7 +208,7 @@ class Question extends HTMLElement {
                             });
                             e.currentTarget.classList.add(Question.Classes.Selected);
                             //save answer
-                            saveAnswer(this);
+                            this.saveAnswer();
                         });
                     });
                     break;
@@ -143,12 +219,111 @@ class Question extends HTMLElement {
                             //set selection status
                             e.currentTarget.classList.toggle(Question.Classes.Selected);
                             //save answer
-                            saveAnswer(this);
+                            this.saveAnswer();
                         });
                     });
                     break;
             }
         });
+    }
+
+    /**
+     * Load answer from localStorage (saved answer) or the answer attribute (reference answer).
+     * @param {boolean} refAnswer
+     */
+    loadAnswer(refAnswer = false) {
+        let stor;
+        if (refAnswer) {
+            //load reference answer. decryptKey should have been set
+            let decrypted = Question.decrypt(this.answer);
+            if (!decrypted) return;
+            stor = { answer: JSON.parse(decrypted) };
+        }
+        else {
+            stor = JSON.parse(localStorage.getItem(this.id));
+        }
+
+        //reset state / clear selections
+        this.question_answers.forEach(e => {
+            e.classList.remove(Question.Classes.RefAnswer);
+            if (refAnswer) e.classList.add(Question.Classes.RefAnswer);
+
+            switch (this.type) {
+                case Question.Types.Text:
+                    e.value = null;
+                    Question.updateHeight(e);
+                    break;
+                case Question.Types.SingleChoice:
+                case Question.Types.MultiChoice:
+                    e.classList.remove(Question.Classes.Selected);
+                    break;
+            }
+        });
+
+        if (!stor || !stor.answer) return;
+        switch (this.type) {
+            case Question.Types.Text:
+                let ans = this.question_answers;
+                for (let i = 0; i < ans.length; i++) {
+                    ans[i].value = null;
+                    if (i < stor.answer.length) {
+                        ans[i].value = stor.answer[i];
+                    }
+                    Question.updateHeight(ans[i]);
+                }
+                break;
+            case Question.Types.SingleChoice:
+            case Question.Types.MultiChoice:
+                if (Object.keys(stor.answer).length === 0) break;
+                let selected = this.question_answers.filter(e => stor.answer.hasOwnProperty(e.getAttribute('value')));
+                if (selected.length > 0) selected.forEach(e => {
+                    e.classList.add(Question.Classes.Selected);
+                });
+                break;
+        }
+    }
+
+    saveAnswer() {
+        if (window.skipSaving) return;
+
+        let stor = {
+            question: this.question_bodies.map(e=>e.textContent.trim()),
+            answer: null,
+        };
+        switch (this.type) {
+            case Question.Types.Text:
+                if (this.question_answers.length === 0) break;
+                stor.answer = this.question_answers.map(e=>e.value);
+                break;
+            case Question.Types.SingleChoice:
+            case Question.Types.MultiChoice:
+                stor.answer = [...this.getElementsByClassName(Question.Classes.Selected)].reduce((pre, cur) => {
+                    pre[cur.getAttribute('value')] = cur.textContent.trim();
+                    return pre;
+                }, {});
+                break;
+            default:
+                return;
+        }
+        localStorage.setItem(this.id, JSON.stringify(stor));
+    }
+
+    toggleTip(/*boolean*/show) {
+        let tipElement = this.question_tip;
+        if (!tipElement) return;
+        if (show) {
+            let tipStr = Question.decrypt(this.tip);
+            if (!tipStr) return;
+            //create element from template
+            for (const ele of document.getElementById('popup-tip').content.children) {
+                tipElement.append(ele.cloneNode(true));
+            }
+            tipElement.querySelector('#popup-tip-text').textContent = tipStr;
+            $(tipElement).slideDown(Question.BaseAnimDuration);
+        }
+        else {
+            $(tipElement).slideUp(Question.BaseAnimDuration, ()=>tipElement.innerHTML = '');
+        }
     }
 
 /*
@@ -173,168 +348,4 @@ class Question extends HTMLElement {
 */
 }
 
-/**
- * Load answer from localStorage (saved answer) or the answer attribute (reference answer).
- * @param {Question} question
- * @param {boolean} refAnswer
- */
-function loadAnswer(question, refAnswer = false) {
-    let stor;
-    if (refAnswer) {
-        //load reference answer. decryptKey should have been set
-        let decrypted = decrypt(question.answer);
-        if (!decrypted) return;
-        stor = { answer: JSON.parse(decrypted) };
-    }
-    else
-        stor = JSON.parse(localStorage.getItem(question.id));
-
-    if (!stor || !stor.answer) return;
-    switch (question.type) {
-        case Question.Types.Text:
-            let ans = question.question_answers;
-            ans.forEach(e=>{ e.value = null; });//clear all text fields
-            for (let i = 0; i < Math.min(ans.length, stor.answer.length); i++) {
-                ans[i].value = stor.answer[i];
-                Question.updateRefAnswer(ans[i], refAnswer);
-                setTimeout(() => Question.updateHeight(ans[i]));
-            }
-            break;
-        case Question.Types.SingleChoice:
-        case Question.Types.MultiChoice:
-            question.question_answers.forEach(e=> {
-                e.classList.remove(Question.Classes.Selected, Question.Classes.RefAnswer);
-            });//clear selections
-            if (Object.keys(stor.answer).length === 0) break;
-            let selected = question.question_answers.filter(e => stor.answer.hasOwnProperty(e.getAttribute('value')));
-            if (selected.length > 0) selected.forEach(e => {
-                e.classList.add(Question.Classes.Selected);
-                if (refAnswer) e.classList.add(Question.Classes.RefAnswer);
-            });
-            break;
-    }
-}
-
-function saveAnswer(/*Question*/question) {
-    if (window.skipSaving) return;
-
-    let stor = {
-        question: question.question_bodies.map(e=>e.textContent.trim()),
-        answer: null,
-    };
-    switch (question.type) {
-        case Question.Types.Text:
-            if (question.question_answers.length === 0) break;
-            stor.answer = question.question_answers.map(e=>e.value);
-            break;
-        case Question.Types.SingleChoice:
-        case Question.Types.MultiChoice:
-            stor.answer = [...question.getElementsByClassName(Question.Classes.Selected)].reduce((pre, cur) => {
-                pre[cur.getAttribute('value')] = cur.textContent.trim();
-                return pre;
-            }, {});
-            break;
-        default:
-            return;
-    }
-    localStorage.setItem(question.id, JSON.stringify(stor));
-}
-
-function toggleTip(/*Question*/question, /*boolean*/show) {
-    let tipElement = question.question_tip;
-    if (!tipElement) return;
-    if (show) {
-        let tipStr = decrypt(question.tip);
-        if (!tipStr) return;
-        //create element from template
-        for (const ele of document.getElementById('popup-tip').content.children) {
-            tipElement.append(ele.cloneNode(true));
-        }
-        tipElement.querySelector('#popup-tip-text').textContent = tipStr;
-        $(tipElement).slideDown(this.BaseAnimDuration);
-    }
-    else {
-        $(tipElement).slideUp(this.BaseAnimDuration, ()=>tipElement.innerHTML = '');
-    }
-}
-
 window.customElements.define('ce-question', Question);
-
-
-function saveAllAnswers(callback) {
-    if (window.skipSaving) return;
-    [...document.getElementsByTagName('ce-question')].forEach(e=>saveAnswer(e));
-    if (callback) callback()
-}
-
-function clearAllAnswers() {
-    if (confirm('Are you sure to clear all saved answers and reload? There is no going back!')) {
-        window.skipSaving = true;
-        localStorage.clear();
-        location.reload();
-    }
-}
-
-function toggleRefAnswers(callback) {
-    if (!window.refAnswer && !testDecryptKey()) return;
-    let delay = 0;
-    let pros = [];
-    [...document.getElementsByTagName('ce-question')].forEach(question=> {
-        pros.push(new Promise((resolve, reject) => {
-            setTimeout(() => {
-                //show or hide reference answer. decryptKey should have been set
-                loadAnswer(question, !window.refAnswer);
-                //show or hide tip.
-                toggleTip(question, !window.refAnswer);
-                resolve();
-            }, delay);
-            delay += 100;
-        }));
-    });
-    Promise.all(pros).then(()=>{
-        window.refAnswer = !window.refAnswer;
-        window.skipSaving = window.refAnswer;
-    }).then(()=>setTimeout(callback, this.BaseAnimDuration + 100));
-}
-
-function testDecryptKey() {
-    while (true) {
-        //check if key is set
-        if (!localStorage.getItem('decryptKey')) {
-            let key = prompt('Input the decryption key if you have it.');
-            if (!key) break;
-            localStorage.setItem('decryptKey', key);
-        }
-        //test if key is correct
-        let key = localStorage.getItem('decryptKey');
-        if (CryptoJS.AES.decrypt('U2FsdGVkX18rL1WTaSQeSym4/dND2ADvi3dOQR3eTsM=', key).toString(CryptoJS.enc.Utf8) === 'test')
-            return true;
-        else {
-            localStorage.removeItem('decryptKey');
-            alert('Invalid decryption key.');
-        }
-    }
-    return false;
-}
-
-/**
- * Assumes decryptKey is set.
- * @param {string} gibberish The encrypted string.
- */
-function decrypt(gibberish) {
-    if (!gibberish) return null;
-    let key = localStorage.getItem('decryptKey');
-    if (!key) return null;
-    return CryptoJS.AES.decrypt(gibberish, key).toString(CryptoJS.enc.Utf8);
-}
-
-/**
- * Assumes decryptKey is set.
- * @param {string} text The string to encrypt.
- */
-function encrypt(text) {
-    if (!text) return null;
-    let key = localStorage.getItem('decryptKey');
-    if (!key) return null;
-    return CryptoJS.AES.encrypt(text, key).toString();
-}
