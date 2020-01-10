@@ -47,6 +47,31 @@
             width: 64em;
         }
 
+        ce-question {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            background-color: #222222;
+            margin: 1.8em 1em;
+            padding: 1em;
+            width: 65em;
+            border-radius: 0.4em;
+            transition: transform 400ms;
+        }
+
+        ce-question:hover {
+            z-index: 99;
+            transform: scale(1.05) translate(2%, 0);
+        }
+
+        img {
+            width: fit-content;
+        }
+
+        .question-head {
+            margin-top: 0;
+        }
+
         .question-answer {
             display: flex;
             align-items: center;
@@ -90,6 +115,7 @@
             background-color: #274227;
             border-radius: 0.4em;
         }
+
         .question-ref-answer::before {
             color: limegreen;
         }
@@ -196,8 +222,7 @@
 <ce-question type='text'
              tip="U2FsdGVkX19EvKdFpOgyelNon2VLmCUcLYDpsjGXEqomUORkmna1z1QWvzUX29cfL1XAs4nvzhpUUfGoGCT1ZrgkBlIqjo39tOH1UoeL8KAUDOYa4/I0HWIiGowOP51U">
     <h2 class="question-head">Question</h2>
-    <p class="question-body">What are the top 3 hobbies you have? List some achievements (if there are any) on each
-        area.</p>
+    <p class="question-body">What are the top 3 hobbies you have? List some achievements (if there are any) on each area.</p>
     <div class="question-tip"></div>
     <textarea class="question-answer" style="margin-bottom: 0.5em"></textarea>
     <textarea class="question-answer" style="margin-bottom: 0.5em"></textarea>
@@ -231,6 +256,8 @@
     <textarea class="question-answer"></textarea>
 </ce-question>
 
+<hr style="border: none; border-bottom: dotted 0.2em;">
+<h1>Part 2</h1>
 <ce-question type='text'
              tip="U2FsdGVkX1+xK8L2a1bB3O4A9+XUjqWMnqE1xpXkEo1RVQr0kNC433YSokVh9aTzzxm1varnrNg7x7+5qPSVNg5Uz7sx1qv9W9eQfr8e/06UNP5eeMYeXNn3ZYu0DHpjPQs+ckKXf6LbeZflQloxuqQmte7m73eMUAbYXaIdkftxsON9iSbHwpMvIcETMzChd8DnnFYOopMMxfjkt4lT/le68xdo5P3GglA+mJiqa5vEkW3sEtQPAI23WYSRCYt3m1ltT4t6NacrDEiXfaZigIZxeG0f1MwlLrmRwbmxOAV1LHbKo8rCHXVl4l7ucBr4wkU8Sh2s9nYkJ1RsLOSkx8eYu0ZeJzkhixbCAumNDlulSHNpfYzbMI4UBk5YBvZs"
              answer="U2FsdGVkX18q9xPMTFbqrq/yGmEKMEJ9V9ZbBXko7iLP0JNJgZqdO4Zfs3bn+64+hPEzCqpmw53WNjJLHT+dtwSJd/FaueMgplusUQ7I4ZsVMszZXwTWTRgnaXbQ/aW2CHxanZE6vDOQV33UuKqHcYyK+8+M+mmLPKQX3tj+atU=">
@@ -250,7 +277,10 @@
              tip="U2FsdGVkX1+91oA9TlURSQGeHbCPAawClVjW5y/PfFFcyhLlnjNcbwQZ9L1cWEgbcNZX/K+DSj6RvD4kJHW0J0O2/QxtqCCfi5OwqkeNy3jLm4GfmJTrHWxmoRBmz2F7eswiAwQ80IFF9Wfxmv9IVcQz8j1/PdsubvCEZMlKzUUJ3MaocECn4QaMzZ0mVkJSV5zrQ9XBiTTX6sySaA2BEmmRHsRHqtMByE5qJy8FKqA07CiTFfL3/Scobo0+4J6el/TeFuumFYso8w8/a2VPbVU3WiFlzGFqXejPXYSNfX3OTjhGreY3M7F4eT/Vo+atIIAKXdDQcXfhc8+u1s/YHzxb632Bl7wnKPfImsKyPPE="
              answer="U2FsdGVkX18ryIOcv2uIldqGObuBvRKDVRVe8iCHHWXsP5HRaNHftpkkc6vZjC06n6Ko6KxnPWmrF8NSPFvEqeBzQatRB3eZyDFvUaNI1TY24FuDsahGdJgVRVDKaDiJhc4W7ljZkH4BFyQj1tVQew==">
     <h2 class="question-head">Question</h2>
-    <p class="question-body"><span>During a </span><c>chkdsk</c><span> operation, the window has been frozen for about 2 hours looking like below. What could possibly be the reason?</span></p>
+    <p class="question-body"><span>During a </span>
+        <c>chkdsk</c>
+        <span> operation, the window has been frozen for about 2 hours looking like below. What could possibly be the reason?</span>
+    </p>
     <img src="res/chkdsk-frozen.png">
     <div class="question-tip"></div>
     <textarea class="question-answer"></textarea>
@@ -260,7 +290,10 @@
              tip="U2FsdGVkX1+eNaRVoqXg64rRHqUPfEYPAK3dWqSZYccqn2B+6q1HebXYPqoJBVdlqYjVUNCeceqCNPe3iteUgV7XG8QNmNQ5+Eu6DStXWr/myQqg5XC+Fbh7gZ9/DBRmiYPX6YoqPX3WFGdTRBZy7QmM3IBIk9F8KrzyrEimkaY="
              answer="U2FsdGVkX18sm16UuYOUbmNaSA+8T/rewNi4QTFlLCJU+NkAoXANQXziQAVXx0KfAezMda0Go2DucI2MIg2D/K1wH+DdQlqs0h8IplF08SgIYF1HuQ0aphiQPak/kt+7kcOEtkcyToveL7QAu8/petGPUsjuk1/m3wOR3ygXQWFLKmk1yHuCe8pYoQZTxlaqqgrEMxa+DM0to7Br7EiZvNpOlp1vpEvxCJC9cRE7Rv92utsS05B+EJ8FM0OmMz0dn+HvHwAT9SLQXe9q9HOtmQ==">
     <h2 class="question-head">Question</h2>
-    <p class="question-body">On the PC, find out why pinging <c>www.baidu.com</c> doesn't work, but Internet browsing works.</p>
+    <p class="question-body">On the PC, find out why pinging
+        <c>www.baidu.com</c>
+        doesn't work, but Internet browsing works.
+    </p>
     <div class="question-tip"></div>
     <textarea class="question-answer"></textarea>
 </ce-question>
@@ -278,7 +311,12 @@
     <h2 class="question-head">Question</h2>
     <div class="question-body">
         <p>On the PC, create a one-line command in PowerShell to test whether an IP address is in the correct format.</p>
-        <p>E.g. <c>192.168.1.100</c> is OK but <c>192.168.1.256</c> is not.</p>
+        <p>E.g.
+            <c>192.168.1.100</c>
+            is OK but
+            <c>192.168.1.256</c>
+            is not.
+        </p>
         <i style="font-size: smaller">Hint: Use Regex and Google to complete the task. The task does not require deep knowledge of Regex or PowerShell.</i>
     </div>
     <div class="question-tip"></div>
@@ -301,7 +339,9 @@
     let _saveButton = document.querySelector('.button.fa-save');
     let _skipSaving = false;
     Object.defineProperty(window, 'skipSaving', {
-        get() { return _skipSaving },
+        get() {
+            return _skipSaving
+        },
         set(v) {
             if (_skipSaving === v) return;
             _skipSaving = v;
@@ -344,10 +384,55 @@
             h.textContent += (' ' + num);
             num += 1;
         });
+
+        // L2Dwidget.init({
+        //     "model": {
+        //         jsonPath: "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+        //         "scale": 1
+        //     },
+        //     "display": {
+        //         "position": "right",
+        //         "width": 150,
+        //         "height": 300,
+        //         "hOffset": 0,
+        //         "vOffset": -20
+        //     },
+        //     "mobile": {
+        //         "show": true,
+        //         "scale": 0.5
+        //     },
+        //     "react": {
+        //         "opacityDefault": 0.7,
+        //         "opacityOnHover": 0.2
+        //     }
+        // });
     };
 
     function getEncryptedAnswer(answer, isJson = false) {
         return Question.encrypt(isJson ? JSON.stringify(answer) : answer);
     }
+
+</script>
+
+<!--Live2D Widget-->
+<script src="../lib/live2dw/L2Dwidget.min.js"></script>
+<script>
+    let char = 'kesyoban';
+    L2Dwidget.init({
+        model: {
+            jsonPath: "https://raw.githubusercontent.com/changbowen/live2dDemo/master/assets/"+char+"/"+char+".model.json",
+            scale: 1,
+            // hHeadPos: .5,
+            // vHeadPos: .618,
+        },
+        display: {
+            superSample: 2,
+            position: "right",
+            width: 400,
+            height: 400,
+            hOffset: -120,
+            vOffset: 0
+        },
+    });
 </script>
 </body>

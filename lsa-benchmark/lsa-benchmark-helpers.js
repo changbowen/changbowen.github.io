@@ -90,7 +90,7 @@ class Question extends HTMLElement {
             //A hack to get the correct scrollHeight. Otherwise scrollHeight is not shrinking.
             let oldHeight = $(element).height() + 'px';
             element.style.height = initial;
-            let newHeight = (element.scrollHeight - 18) + 'px';
+            let newHeight = (element.scrollHeight - Number(getComputedStyle(element).fontSize.slice(0, 2))) + 'px';
             element.style.height = oldHeight;
             $(element).animate({ height: newHeight }, Question.BaseAnimDuration, 'swing', ()=>Question.AutoSizeTimer.delete(element));
         }, 200));
@@ -128,13 +128,13 @@ class Question extends HTMLElement {
                     question.toggleTip(tobe);
                     resolve();
                 }, delay);
-                delay += 100;
+                delay += 50;
             }));
         });
         Promise.all(pros).then(()=>{
             window.refAnswer = tobe;
             window.skipSaving = tobe;
-        }).then(()=>setTimeout(callback, this.BaseAnimDuration + 100));
+        }).then(()=>setTimeout(callback, this.BaseAnimDuration + 50));
     }
 
     static testDecryptKey() {
@@ -352,4 +352,5 @@ class Question extends HTMLElement {
 */
 }
 
+//define custom element
 window.customElements.define('ce-question', Question);
