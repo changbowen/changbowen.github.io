@@ -113,23 +113,27 @@ class Question extends HTMLElement {
 
     static toggleRefAnswers(callback) {
         if (!window.refAnswer && !Question.testDecryptKey()) return;
+
+        let tobe = !window.refAnswer;
+        if (tobe) window.skipSaving = true;//disable the save button before loading ref answer
+
         let delay = 0;
         let pros = [];
         [...document.getElementsByTagName('ce-question')].forEach(question=> {
             pros.push(new Promise((resolve, reject) => {
                 setTimeout(() => {
                     //show or hide reference answer. decryptKey should have been set
-                    question.loadAnswer(!window.refAnswer);
+                    question.loadAnswer(tobe);
                     //show or hide tip.
-                    question.toggleTip(!window.refAnswer);
+                    question.toggleTip(tobe);
                     resolve();
                 }, delay);
                 delay += 100;
             }));
         });
         Promise.all(pros).then(()=>{
-            window.refAnswer = !window.refAnswer;
-            window.skipSaving = window.refAnswer;
+            window.refAnswer = tobe;
+            window.skipSaving = tobe;
         }).then(()=>setTimeout(callback, this.BaseAnimDuration + 100));
     }
 

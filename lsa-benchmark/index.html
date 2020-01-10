@@ -146,7 +146,7 @@
        title="Toggle reference answers"
        onclick="(function(i) {
            i.classList.add('disabled');
-           popupCheck(window.refAnswer ?
+           popupCheck(!window.refAnswer ?
                'Showing reference answers!\r\nAuto save disabled.' :
                'Showing saved answers!\r\nAuto save enabled.');
            Question.toggleRefAnswers(() => i.classList.remove('disabled'));
@@ -248,7 +248,7 @@
 
 <ce-question type='text'
              tip="U2FsdGVkX1+91oA9TlURSQGeHbCPAawClVjW5y/PfFFcyhLlnjNcbwQZ9L1cWEgbcNZX/K+DSj6RvD4kJHW0J0O2/QxtqCCfi5OwqkeNy3jLm4GfmJTrHWxmoRBmz2F7eswiAwQ80IFF9Wfxmv9IVcQz8j1/PdsubvCEZMlKzUUJ3MaocECn4QaMzZ0mVkJSV5zrQ9XBiTTX6sySaA2BEmmRHsRHqtMByE5qJy8FKqA07CiTFfL3/Scobo0+4J6el/TeFuumFYso8w8/a2VPbVU3WiFlzGFqXejPXYSNfX3OTjhGreY3M7F4eT/Vo+atIIAKXdDQcXfhc8+u1s/YHzxb632Bl7wnKPfImsKyPPE="
-             answer="U2FsdGVkX1+YbzQuyeGfIHsarWegsWps5+gICkRIz8i6v9QP09jww9BwQHHvPEPDvFnWxELeA9+dyNJ46+8LWkeiwI92znqeOqgzqsu8FVLminqXlnsR3aStHZdnfnu0ujwBnKlkAfuWyFyQn7fUWA==">
+             answer="U2FsdGVkX18ryIOcv2uIldqGObuBvRKDVRVe8iCHHWXsP5HRaNHftpkkc6vZjC06n6Ko6KxnPWmrF8NSPFvEqeBzQatRB3eZyDFvUaNI1TY24FuDsahGdJgVRVDKaDiJhc4W7ljZkH4BFyQj1tVQew==">
     <h2 class="question-head">Question</h2>
     <p class="question-body"><span>During a </span><c>chkdsk</c><span> operation, the window has been frozen for about 2 hours looking like below. What could possibly be the reason?</span></p>
     <img src="res/chkdsk-frozen.png">
@@ -296,8 +296,19 @@
 </ce-question>-->
 
 <script>
-    window.skipSaving = false;
     window.refAnswer = false;
+
+    let _saveButton = document.querySelector('.button.fa-save');
+    let _skipSaving = false;
+    Object.defineProperty(window, 'skipSaving', {
+        get() { return _skipSaving },
+        set(v) {
+            if (_skipSaving === v) return;
+            _skipSaving = v;
+            if (v) _saveButton.classList.add('disabled');
+            else _saveButton.classList.remove('disabled');
+        }
+    });
 
     function popupCheck(text, iconClass = 'fas fa-check-circle', iconColor = 'lightgreen') {
         let pop = document.getElementById('popup-simple').content.firstElementChild.cloneNode(true);
@@ -316,7 +327,7 @@
     document.onkeydown = function (e) {
         if (e.ctrlKey && e.key === 's') {
             e.preventDefault();
-            Question.saveAllAnswers(() => popupCheck('Answers saved!'));
+            _saveButton.click();
         }
     };
 
