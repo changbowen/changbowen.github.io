@@ -415,24 +415,48 @@
 </script>
 
 <!--Live2D Widget-->
-<script src="../lib/live2dw/L2Dwidget.min.js"></script>
+<canvas id="live2d" width="600" height="600"
+        style="position: fixed; right: 0; bottom: 0; pointer-events: none;"></canvas>
+<script src="../lib/live2dw/live2d.js"></script>
 <script>
-    let char = 'kesyoban';
-    L2Dwidget.init({
-        model: {
-            jsonPath: "https://raw.githubusercontent.com/changbowen/live2d-collection/master/"+char+"/"+char+".model.json",
-            scale: 1,
-            // hHeadPos: .5,
-            // vHeadPos: .618,
-        },
-        display: {
-            superSample: 2,
-            position: "right",
-            width: 400,
-            height: 400,
-            hOffset: -120,
-            vOffset: 0
-        },
-    });
+    loadlive2d('live2d', 'https://raw.githubusercontent.com/changbowen/live2d-collection/kesyoban/kesyoban.model.json');
+    // loadlive2d('live2d', 'http://localhost:63342/live2d-collection/kesyoban/kesyoban.model.json');
+    // L2Dwidget.init({
+    //         model: {
+    //             jsonPath: 'https://raw.githubusercontent.com/changbowen/live2d-collection/master/HyperdimensionNeptunia/nepnep/index.json',
+    //             scale: 1,
+    //             hHeadPos: 0.5,
+    //             vHeadPos: 0.618,
+    //             myDefine: []
+    //         },
+    //         display: {
+    //             superSample: 2,
+    //             width: 150,
+    //             height: 300,
+    //             position: 'right',
+    //             hOffset: 0,
+    //             vOffset: -20
+    //         },
+    //         mobile: {
+    //             show: true,
+    //             scale: 0.5,
+    //             motion: true
+    //         },
+    //         name: {
+    //             canvas: 'live2dcanvas',
+    //             div: 'live2d-widget'
+    //         },
+    //         react: {
+    //             opacityDefault: 0.7,
+    //             opacityOnHover: 0.2
+    //         }
+    //     },
+    //     {
+    //         dev: {
+    //             log: false,
+    //             border: false,
+    //             mouseLog: false
+    //         }
+    //     });
 </script>
 </body>
