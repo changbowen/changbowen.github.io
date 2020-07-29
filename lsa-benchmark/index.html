@@ -18,6 +18,10 @@
     <!-- CryptoJS -->
     <script src="../lib/CryptoJS/crypto-js.min.js"></script>
 
+    <!-- Quill -->
+    <link href="../lib/quill/quill.snow.css" rel="stylesheet">
+    <script src="../lib/quill/quill.min.js"></script>
+
     <!-- page style -->
     <style>
         .hidden {
@@ -37,7 +41,7 @@
             padding: 0.5em;
             border-width: 0;
             border-radius: 0.4em;
-            background-color: #ffffff33;
+            background-color: #ffffff22;
             font-size: 1em;
             resize: none;
             overflow: hidden;
@@ -125,6 +129,19 @@
             width: fit-content;
             margin-bottom: 1em;
             font-size: 0.8em;
+        }
+
+        .ql-toolbar.ql-snow,
+        .ql-container.ql-snow {
+            font-family: inherit;
+            border-width: 0;
+            border-radius: 0.4em;
+            font-size: 1em;
+        }
+
+        .ql-container.ql-snow {
+            display: block;
+            background-color: #ffffff22;
         }
     </style>
 </head>
@@ -256,6 +273,29 @@
     <textarea class="question-answer"></textarea>
 </ce-question>
 
+<ce-question type='richtext'
+             tip="U2FsdGVkX1+Yb3rUuEZ4zoZrq+RXm2bWxY6YR1/agGogkULGNnR4bk3qBiTAZJZjwc0jVHpPQtfJ9HTMF4pY3OAxpjntuJNF3TiqWJkrsGpbS4dBGTD7CqK5J36vcs7dsvbRCMUawgl+awsZTu/NssS7nusRPDCYx1yEbVM3aQM="
+             answer="U2FsdGVkX18u3dDNVkdUMOoGLk0IbV/KV7P1ooAsyO+VYL6DBjLoaAGrtov4HIzL2TGAvU8akefkF03o9WFJg18nScWuldklsAhyhAzlVDjKMivGVV9i4l5zYLRfHF/A6ne1cAtX64nrL4C4LadSxwB0UiS0dZDQyn5LoNYHBpMn8Z76r80xXRkyo9FbDY6Zho57nNipuTAv/imocJWXF+7g4hCd7pMSVfdt2/0hmuELTuErUS/FF/ORV+8xFV09y2IvvowZAlzFohOT/0CwWG/q3fyuwTlSR2jiwGxQD1ZwiZA8VY0Fo3fdwKASNzqbhAj84SHRfwFZ+rANDVvvNCp5N/85CD9cWm6QacMWJLgXyYpmnyfCXmBk9EGDQTIkpmtop6tOzGzzL8YmX3C4sBPF0ZJfrgFs+WoiqFTrJjXLcGVDRqMkFASYc9074RVw0KhOk9uSREy8ZjAO7g0W6ZIBf6cpAAG205tIV4Lbzilyt6ZL/A3c+pAbBFjk5fUqDCyYQzYDkfJqu/RW8Bf+5yy4Uz604vIt09HDzMlySPWzuG4bxhfozujAH7On5qccVsiGjQsWhwvf8NzNJAZLpuZHUavau7zC2OBUd/tNfwN/QNuKSZ3v5qmNV60Kg1ppaxsacU87Au2M2q2fuLdYO5HpX2jU5Ibf0pwTiBeULUR/dNyS5bX1DgpaNkruBlEOKbyOseTOTi9HAMPMdiOB9eVRXXw72Hw1lQC3d7OhFGR9ZMD7227QKOYgDywZJCUWwsFVA2OpFXuxrjUyYLOz27mqc6VT3l0ReuCYN3m1LWejL7hdrYhAB5Iy4j4roCxjzZ5sCQ4jiS9LiU2Hc1GayktqEBSw87lCSqAVzzSVSEx+qyIlwryTVeIWR1c+ygKyJ0w/w3o+oyXC+hWRAok+N84x8O9nhglS7pipIpLHoB5yVajD7DKeLj+thND5S0AhwSNQwou1iZ6QfRW1k5T2tAQtrZfpJqotsa5Fsx+OAZ8dEqogNHvDzsXVCFYAiRYHznjDteaUfBWIzrIh42IGh2pJquRXGZfsLPklWJ/+S3ZLi7V2q8Y0MAtVO7kEfxnO890X4uhMFqvARkDgrQIZ/ynji+ZHwUUJmRhkTYn7dPH9amxTZqzYwNuh3ZC4qxds">
+    <h2 class="question-head">Question</h2>
+    <div class="question-body">
+        <p>Fix the below email so that it is acceptable to you as well-formatted and clear communication in day-to-day business.</p>
+        <div class="panel" style="margin: 0.5em; font-family: Arial, Helvetica, sans-serif;">
+            <p>hi, john</p>
+            <p>Here are some thoughts regarding out previous meeting.</p>
+            <ul>
+                <li>the normal operation power per rack should be 5.5 instead of 8 KVA, max safe power is 7.04VKA. I think 8 is the previous figure.</li>
+                <li>there shouldnt really be any gap between racked devices .It is a waste of space and can actually hurt the airflow.</li>
+                <li>we used R740 with 2xgold 6126( 125w tdp ) and the power consumption is 0.375– 0.5KVA.</li>
+                <li>the cluster use Vmware VSAN as storage and each node has ESXI version 6.7.</li>
+            </ul>
+            <p>Best regargs</p>
+            <p>Alex</p>
+        </div>
+    </div>
+    <div class="question-tip"></div>
+    <div class="question-answer quill-editor" style="width: auto; height: auto;"></div>
+</ce-question>
+
 <hr style="border: none; border-bottom: dotted 0.2em;">
 <h1>Part 2</h1>
 <ce-question type='text'
@@ -332,6 +372,14 @@
     <div class="question-answer question-answer-select" value="fart"><span style="margin-left: 0.4em">Fart as much as possible.</span></div>
     <div class="question-answer question-answer-select" value="eat dirt"><span style="margin-left: 0.4em">Eat some dirt.</span></div>
 </ce-question>-->
+
+<script>
+    [...document.getElementsByClassName('quill-editor')].forEach(ele => {
+        ele.quill = new Quill(ele, {
+            theme: 'snow',
+        });
+    })
+</script>
 
 <script>
     window.refAnswer = false;

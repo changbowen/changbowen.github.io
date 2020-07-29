@@ -43,6 +43,7 @@ class Question extends HTMLElement {
     };
 
     static Types = {
+        RichText: 'richtext',
         Text: 'text',
         SingleChoice: 'single-choice',
         MultiChoice: 'multi-choice',
@@ -86,6 +87,7 @@ class Question extends HTMLElement {
 
     static updateHeight(element, initial = '1.6em') {
         clearTimeout(Question.AutoSizeTimer.get(element));//reduce resize calls when typing
+        if (element.style.height === 'auto') return;
         Question.AutoSizeTimer.set(element, setTimeout(() => {
             //A hack to get the correct scrollHeight. Otherwise scrollHeight is not shrinking.
             let oldHeight = $(element).height() + 'px';
@@ -191,6 +193,11 @@ class Question extends HTMLElement {
             this.loadAnswer();
             //post init
             switch (this.type) {
+                case Question.Types.RichText:
+                    this.question_answers.forEach(ans => {
+                        ans.quill.on('text-change', () => this.saveAnswer());
+                    });
+                    break;
                 case Question.Types.Text:
                     this.question_answers.forEach(ans => {
                         ans.addEventListener('scroll', e => e.target.scrollTop = 0);//prevent scrolling due to height auto growth
@@ -253,6 +260,7 @@ class Question extends HTMLElement {
             if (refAnswer) e.classList.add(Question.Classes.RefAnswer);
 
             switch (this.type) {
+                case Question.Types.RichText:
                 case Question.Types.Text:
                     e.value = null;
                     Question.updateHeight(e);
@@ -266,12 +274,16 @@ class Question extends HTMLElement {
 
         if (!stor || !stor.answer) return;
         switch (this.type) {
+            case Question.Types.RichText:
             case Question.Types.Text:
                 let ans = this.question_answers;
                 for (let i = 0; i < ans.length; i++) {
                     ans[i].value = null;
                     if (i < stor.answer.length) {
-                        ans[i].value = stor.answer[i];
+                        if (this.type === Question.Types.RichText)
+                            ans[i].quill.setContents(JSON.parse(stor.answer[i]));
+                        else
+                            ans[i].value = stor.answer[i];
                     }
                     Question.updateHeight(ans[i]);
                 }
@@ -295,6 +307,9 @@ class Question extends HTMLElement {
             answer: null,
         };
         switch (this.type) {
+            case Question.Types.RichText:
+                stor.answer = this.question_answers.map(e=>JSON.stringify(e.quill.getContents()));
+                break;
             case Question.Types.Text:
                 if (this.question_answers.length === 0) break;
                 stor.answer = this.question_answers.map(e=>e.value);
