@@ -48,7 +48,7 @@
         }
 
         textarea.question-answer {
-            width: 64em;
+            width: 59em;
         }
 
         ce-question {
@@ -58,7 +58,7 @@
             background-color: #222222;
             margin: 1.8em 1em;
             padding: 1em;
-            width: 65em;
+            width: 60em;
             border-radius: 0.4em;
             transition: transform 400ms;
         }
@@ -86,6 +86,7 @@
         .question-answer-select {
             margin-left: 1.2em;
             transform: scale(0.9, 0.9);
+            transform-origin: left;
             filter: brightness(100%) drop-shadow(0 0.1em 0.1em #000000cc);
             transition: filter 0.3s, transform 0.2s;
         }
@@ -116,8 +117,12 @@
 
         textarea.question-ref-answer {
             color: #cbe0cb;
-            background-color: #274227;
-            border-radius: 0.4em;
+            background-color: #274227 !important;
+        }
+
+        .quill-editor.question-ref-answer {
+            color: #cbe0cb;
+            background-color: #274227 !important;
         }
 
         .question-ref-answer::before {
@@ -209,9 +214,8 @@
 
 
 <h1>Part 1</h1>
-<ce-question type="single-choice"
-             tip="U2FsdGVkX1/IXPQratmhKWppyUCdzKnpqZzG+FBkNkNMiDP0+0plamPHcDIAzM2pAH0+mMHghhY8uAGu6ZOKOGl0SuCF5QoeOf62Anr1W565w86o6UpPb5Ctho1ibmRh8kF49qVBG95U+SczL1JbsmTB+7GfMZa63sqWWzHqRYzWnBkEMlOyQPVbAxzAfers0K4xwhon2m6Vef6lSKtA6uHORIWxqyFbLuvxhfInPkI="
-             answer="U2FsdGVkX1/KaMK/MbclCYURxeEjMJjFpbOBo/j28cc=">
+<ce-question tip="U2FsdGVkX1/IXPQratmhKWppyUCdzKnpqZzG+FBkNkNMiDP0+0plamPHcDIAzM2pAH0+mMHghhY8uAGu6ZOKOGl0SuCF5QoeOf62Anr1W565w86o6UpPb5Ctho1ibmRh8kF49qVBG95U+SczL1JbsmTB+7GfMZa63sqWWzHqRYzWnBkEMlOyQPVbAxzAfers0K4xwhon2m6Vef6lSKtA6uHORIWxqyFbLuvxhfInPkI="
+             answer="U2FsdGVkX186RnuVW4sqbLM8D+KHVYr6ek1TvIolBN4=">
     <h2 class="question-head">Question</h2>
     <div class="question-body">
         <p>Answer the question according to the conversation below.</p>
@@ -226,56 +230,63 @@
     <p class="question-answer question-answer-select" value="no">No</p>
 </ce-question>
 
-<ce-question type='text'
-             tip="U2FsdGVkX1/Dh/qCpYK5XMO/bQbicXrCNhUB4DcE5zzi/hJdnnB/9FjKInXycHxAbzTwFAHptKNWMM8s2uP0H8G5e900p1LmCVEeO0DLJ3Q="
-             answer="U2FsdGVkX19F7Ld4VwMAOVmttzPEiRGXi+Jt6d0CnDcSBHPGoAeGQD8THk2cLPu1NoF5QEGytcKKNR0Jdw89HA==">
+<ce-question tip="U2FsdGVkX1/Dh/qCpYK5XMO/bQbicXrCNhUB4DcE5zzi/hJdnnB/9FjKInXycHxAbzTwFAHptKNWMM8s2uP0H8G5e900p1LmCVEeO0DLJ3Q="
+             answer="U2FsdGVkX19CXzqJ0K9219BzoC99BJmJ+luM1wyBlkpg3BOWIpP74yGBUx3o2onkHV9H6o9VDWHndloSVBdr+Q==">
     <h2 class="question-head">Question</h2>
     <p class="question-body">What is wrong with the below rectangle?</p>
     <img src="res/rounded-rectangle.png"/>
     <div class="question-tip"></div>
-    <textarea class="question-answer"></textarea>
+    <textarea class="question-answer question-answer-text"></textarea>
 </ce-question>
 
-<ce-question type='text'
-             tip="U2FsdGVkX19EvKdFpOgyelNon2VLmCUcLYDpsjGXEqomUORkmna1z1QWvzUX29cfL1XAs4nvzhpUUfGoGCT1ZrgkBlIqjo39tOH1UoeL8KAUDOYa4/I0HWIiGowOP51U">
+<ce-question tip="U2FsdGVkX19EvKdFpOgyelNon2VLmCUcLYDpsjGXEqomUORkmna1z1QWvzUX29cfL1XAs4nvzhpUUfGoGCT1ZrgkBlIqjo39tOH1UoeL8KAUDOYa4/I0HWIiGowOP51U">
     <h2 class="question-head">Question</h2>
     <p class="question-body">What are the top 3 hobbies you have? List some achievements (if there are any) on each area.</p>
     <div class="question-tip"></div>
-    <textarea class="question-answer" style="margin-bottom: 0.5em"></textarea>
-    <textarea class="question-answer" style="margin-bottom: 0.5em"></textarea>
-    <textarea class="question-answer"></textarea>
+    <textarea class="question-answer question-answer-text" style="margin-bottom: 0.5em"></textarea>
+    <textarea class="question-answer question-answer-text" style="margin-bottom: 0.5em"></textarea>
+    <textarea class="question-answer question-answer-text"></textarea>
 </ce-question>
 
-<ce-question type='text'
+<ce-question tip=""
+             answer="U2FsdGVkX19KbvAJVbv89BoPvuP5NayPVbG/xvBSw1pmO8i3gRK1S5diPNrZhz5A">
+    <h2 class="question-head">Question</h2>
+    <p class="question-body">How long do you spend on short video apps (TikTok, Kwai...) every day? What are your mostly watched categories?</p>
+    <div class="question-tip"></div>
+    <p class="question-answer question-answer-select" value="seldomly">Seldomly</p>
+    <p class="question-answer question-answer-select" value="sometimes">Sometimes</p>
+    <p class="question-answer question-answer-select" value="always">All the time</p>
+    <p class="question-answer question-answer-select" value="never">I don't use these apps</p>
+    <textarea class="question-answer question-answer-text"></textarea>
+</ce-question>
+
+<!-- <ce-question type='text'
              tip="U2FsdGVkX19nf4k+cMA3HwvbXiyWLzHRvxqsAADMRkjF0+6xmFPWN1mIk6uKUdKy/xMIio0oaPi7mTp+oOGCJvYPWui1XJ6nvpYAQ/jYmtaoDY7tvHmi5Z+dhOZNdP2b5Pk/55qI5+d8FYqObSIl16YGj6++ij/QA5YsSoLodcTsPBd1WqMn1Rr30DekbXg5ZvjMgSleui96S+nZTa739+THbtbgyef2PGrqlabcjhwhhu6tGUQkX3l7y8QnaWoQEIw19thNLC3zVGMwTq8VDHy6QhsnkhZuhIF6ZHF3PP98qjpjXAQKmwCt8xUc8QNqaqXg5d1JJO33X7obI4I9gtlZrpFDQaNSI/ZcX5nQCo8="
              answer="U2FsdGVkX19lbCXm0n7T38Ty061iV8OV8k1G9SHdxsc=">
     <h2 class="question-head">Question</h2>
     <p class="question-body">What does the letter P inside the network acronym TCP stand for?</p>
     <div class="question-tip"></div>
     <textarea class="question-answer"></textarea>
-</ce-question>
+</ce-question> -->
 
-<ce-question type='text'
-             tip="U2FsdGVkX1+qoAidngNrrLVeXZTy0tddWXxPX543xjVAN+x+6T54jlcAfJx1aMhBW54EEiYtBDBKs/t9iqceov4DXiBUBCM/djaPunYVz+2txeOP7jv0Dszcm/PAqrLN5n1FcHTlMmks/zb+dk7qUrRxuz4HXsKTc1SLT/fuYmPVJieKf0hHPv04aBgE8KqVt5nGUKkhYmdVWZOejRYlmbpS4Hx19xIKxWvsGnQ8cx8KLqs6ixpMhLgMSC8jlaXL+mC6swU7zjJ3AeBq2OgUdw=="
-             answer="U2FsdGVkX1+tM3Gy1GEH51Zd4f6JpUq6BxPR/98znWsQwfLQ9NJNjvlGnptMUIEJ0a+3dRybXEjWJCDQRfjTiUNwCjsO5x0z5nyKtzGGz4FsArpYMMkBwJSXwib6hAe2">
+<ce-question tip="U2FsdGVkX1+qoAidngNrrLVeXZTy0tddWXxPX543xjVAN+x+6T54jlcAfJx1aMhBW54EEiYtBDBKs/t9iqceov4DXiBUBCM/djaPunYVz+2txeOP7jv0Dszcm/PAqrLN5n1FcHTlMmks/zb+dk7qUrRxuz4HXsKTc1SLT/fuYmPVJieKf0hHPv04aBgE8KqVt5nGUKkhYmdVWZOejRYlmbpS4Hx19xIKxWvsGnQ8cx8KLqs6ixpMhLgMSC8jlaXL+mC6swU7zjJ3AeBq2OgUdw=="
+             answer="U2FsdGVkX1/B0kmrtIRPVIfwp/Lzbhy5/DYb3+DRBKYdUQGYGNnaJnrt9BG61Rt5auR9MaLqAUXFUGE7vJWHbkxEMXk8mBUHUuO6BdC2qi6X5h+SlAp39tAdZqlL+1AGPRDCsGHYn/xxqfbopT5y3Q==">
     <h2 class="question-head">Question</h2>
     <p class="question-body">What are the first few things you check when a user complains about a folder in the share is missing?</p>
     <div class="question-tip"></div>
-    <textarea class="question-answer"></textarea>
+    <textarea class="question-answer question-answer-text"></textarea>
 </ce-question>
 
-<ce-question type='text'
-             tip="U2FsdGVkX1+RlBBGotYJOZfacFSKyjVQsoIEz4plcYZGXdshUys96Vmo+Sk4o4LaVLippZGAFrpmLvrY2c4Tdtkh2VcTNkwDtoAnfqWzkTcSG64wkWm77oJbEMJiZRdfxSIicppITzu4zOitx87Zm5VsahMGSQtx8qfC+HhP6WHY6ZRY/7UU+kBvaooZu/smfkCBAITJwV8wkepWWkBRu/jq27TQEKD/+NpymmdFq3Y="
-             answer="U2FsdGVkX18wB9h8nfydyvtZgySbknITXgADC0eHyCs=">
+<ce-question tip="U2FsdGVkX1+RlBBGotYJOZfacFSKyjVQsoIEz4plcYZGXdshUys96Vmo+Sk4o4LaVLippZGAFrpmLvrY2c4Tdtkh2VcTNkwDtoAnfqWzkTcSG64wkWm77oJbEMJiZRdfxSIicppITzu4zOitx87Zm5VsahMGSQtx8qfC+HhP6WHY6ZRY/7UU+kBvaooZu/smfkCBAITJwV8wkepWWkBRu/jq27TQEKD/+NpymmdFq3Y="
+             answer="U2FsdGVkX1+/+9bVtm/ybgpUBzBnwjIAWVS2jLk72g4=">
     <h2 class="question-head">Question</h2>
     <p class="question-body">What would you do when you encounter a problem that you never seen before?</p>
     <div class="question-tip"></div>
-    <textarea class="question-answer"></textarea>
+    <textarea class="question-answer question-answer-text"></textarea>
 </ce-question>
 
-<ce-question type='richtext'
-             tip="U2FsdGVkX1+Yb3rUuEZ4zoZrq+RXm2bWxY6YR1/agGogkULGNnR4bk3qBiTAZJZjwc0jVHpPQtfJ9HTMF4pY3OAxpjntuJNF3TiqWJkrsGpbS4dBGTD7CqK5J36vcs7dsvbRCMUawgl+awsZTu/NssS7nusRPDCYx1yEbVM3aQM="
-             answer="U2FsdGVkX18u3dDNVkdUMOoGLk0IbV/KV7P1ooAsyO+VYL6DBjLoaAGrtov4HIzL2TGAvU8akefkF03o9WFJg18nScWuldklsAhyhAzlVDjKMivGVV9i4l5zYLRfHF/A6ne1cAtX64nrL4C4LadSxwB0UiS0dZDQyn5LoNYHBpMn8Z76r80xXRkyo9FbDY6Zho57nNipuTAv/imocJWXF+7g4hCd7pMSVfdt2/0hmuELTuErUS/FF/ORV+8xFV09y2IvvowZAlzFohOT/0CwWG/q3fyuwTlSR2jiwGxQD1ZwiZA8VY0Fo3fdwKASNzqbhAj84SHRfwFZ+rANDVvvNCp5N/85CD9cWm6QacMWJLgXyYpmnyfCXmBk9EGDQTIkpmtop6tOzGzzL8YmX3C4sBPF0ZJfrgFs+WoiqFTrJjXLcGVDRqMkFASYc9074RVw0KhOk9uSREy8ZjAO7g0W6ZIBf6cpAAG205tIV4Lbzilyt6ZL/A3c+pAbBFjk5fUqDCyYQzYDkfJqu/RW8Bf+5yy4Uz604vIt09HDzMlySPWzuG4bxhfozujAH7On5qccVsiGjQsWhwvf8NzNJAZLpuZHUavau7zC2OBUd/tNfwN/QNuKSZ3v5qmNV60Kg1ppaxsacU87Au2M2q2fuLdYO5HpX2jU5Ibf0pwTiBeULUR/dNyS5bX1DgpaNkruBlEOKbyOseTOTi9HAMPMdiOB9eVRXXw72Hw1lQC3d7OhFGR9ZMD7227QKOYgDywZJCUWwsFVA2OpFXuxrjUyYLOz27mqc6VT3l0ReuCYN3m1LWejL7hdrYhAB5Iy4j4roCxjzZ5sCQ4jiS9LiU2Hc1GayktqEBSw87lCSqAVzzSVSEx+qyIlwryTVeIWR1c+ygKyJ0w/w3o+oyXC+hWRAok+N84x8O9nhglS7pipIpLHoB5yVajD7DKeLj+thND5S0AhwSNQwou1iZ6QfRW1k5T2tAQtrZfpJqotsa5Fsx+OAZ8dEqogNHvDzsXVCFYAiRYHznjDteaUfBWIzrIh42IGh2pJquRXGZfsLPklWJ/+S3ZLi7V2q8Y0MAtVO7kEfxnO890X4uhMFqvARkDgrQIZ/ynji+ZHwUUJmRhkTYn7dPH9amxTZqzYwNuh3ZC4qxds">
+<ce-question tip="U2FsdGVkX1+Yb3rUuEZ4zoZrq+RXm2bWxY6YR1/agGogkULGNnR4bk3qBiTAZJZjwc0jVHpPQtfJ9HTMF4pY3OAxpjntuJNF3TiqWJkrsGpbS4dBGTD7CqK5J36vcs7dsvbRCMUawgl+awsZTu/NssS7nusRPDCYx1yEbVM3aQM="
+             answer="U2FsdGVkX19f80fmbCDES0EM+IJGshpYBETQ/RMiFCiVpU3FsYcfBEfU8XO2hVsv0acP45F29VwFNhZj5OGA43X/dDR9sDih44QEK7VUNA5gQryCS9lQZ0SPQcQ6PCdUTbghyJdTPKQt35aH0VOM+dX0OgLq4lL6ao02isl2PCJ19oJtVyk5vIvoxY8OXcolLwwOTLVo/Kmm4ZH7ifjpIpcKlPvZ5f2dk0ghvrszU0IjfDNeSmN9SHCda/Ujt4DlEfhxZ/sWUvJDWUhg+zhBf5Mj9Q8/wSabl6kBItgIr0ZQ34ZBgusNGGTEUJtdaprPMgh84Fvb3WAOFVsMZBvPYzU2naQs5QtYuuVKdj4M26qGkan6riZMt9QSCo+6WGe64eBgKSnqL0D3gxd30WsMzopALcZKvV1lN7Nl1hDDyo0uRBHvDUw8gTCaVQEAkXb4THPrgWGX/CbXHdmph4INctv3XsKTIpDAJxq5evXAULMVYKhN3Q9Rb6fdR/uyCQYH/bfeCYpFJ1mVDbx1pPXTJgSrQO48TqvDI0GMBlB3KMmSZDRWu5162Jc8OxjSNKVwLwAnH/h9AIBg7OPdLkM0i+P8YAMuUSA6wk2O1L7REz9pXJOGOCYtTZN1v4brVLGC54+4LYyVVdS4pRiiqmSwYxrmA4AD7xP8pzmP5OpBwF768P0yrpfXD/2YDGNDRl6595VJRiZUaTedd7E+ZmH9TVV/4OQhru+1TILIFBSBokDI0z3spZzF/NDw1M/6NEOFdlktZlS+mghIHefw/rqk86m/R/idg9zeoAg0zf66Z8xeyQaaEIw2hcrentU3ZXvYBSM82XXVX3VdAp/iaGbhqG0WicBV2YBWpoeCfu0zAh8y2C/xq9jB3ckB6bJKFes1ZzCW4vwWwI/uij2u6lo3fj+vXr52zeTdMfeg0qxJxGLaU306c7wMD0JFo3og+YO9LohIrOeGnzQUmhY5ucEjeFPAdW9gq+WQOTvjZ+L01OvdB7AZg6TqTSomP81Zc511OJp08p38+PDgfHbNycam0byfTCDqX0PEbQ8BXVwcTi9mucC6StP/Pnfon/NnwmW3nc6J1/4azigLBX29DCi40VxTeKbEp8MpG1OG2x4/473dbCJblwGYP56iJiywSMpM">
     <h2 class="question-head">Question</h2>
     <div class="question-body">
         <p>Fix the below email so that it is acceptable to you as well-formatted and clear communication in day-to-day business.</p>
@@ -293,14 +304,13 @@
         </div>
     </div>
     <div class="question-tip"></div>
-    <div class="question-answer quill-editor" style="width: auto; height: auto;"></div>
+    <div class="question-answer question-answer-richtext quill-editor" style="width: auto; height: auto;"></div>
 </ce-question>
 
 <hr style="border: none; border-bottom: dotted 0.2em;">
 <h1>Part 2</h1>
-<ce-question type='text'
-             tip="U2FsdGVkX1+xK8L2a1bB3O4A9+XUjqWMnqE1xpXkEo1RVQr0kNC433YSokVh9aTzzxm1varnrNg7x7+5qPSVNg5Uz7sx1qv9W9eQfr8e/06UNP5eeMYeXNn3ZYu0DHpjPQs+ckKXf6LbeZflQloxuqQmte7m73eMUAbYXaIdkftxsON9iSbHwpMvIcETMzChd8DnnFYOopMMxfjkt4lT/le68xdo5P3GglA+mJiqa5vEkW3sEtQPAI23WYSRCYt3m1ltT4t6NacrDEiXfaZigIZxeG0f1MwlLrmRwbmxOAV1LHbKo8rCHXVl4l7ucBr4wkU8Sh2s9nYkJ1RsLOSkx8eYu0ZeJzkhixbCAumNDlulSHNpfYzbMI4UBk5YBvZs"
-             answer="U2FsdGVkX18q9xPMTFbqrq/yGmEKMEJ9V9ZbBXko7iLP0JNJgZqdO4Zfs3bn+64+hPEzCqpmw53WNjJLHT+dtwSJd/FaueMgplusUQ7I4ZsVMszZXwTWTRgnaXbQ/aW2CHxanZE6vDOQV33UuKqHcYyK+8+M+mmLPKQX3tj+atU=">
+<ce-question tip="U2FsdGVkX1+xK8L2a1bB3O4A9+XUjqWMnqE1xpXkEo1RVQr0kNC433YSokVh9aTzzxm1varnrNg7x7+5qPSVNg5Uz7sx1qv9W9eQfr8e/06UNP5eeMYeXNn3ZYu0DHpjPQs+ckKXf6LbeZflQloxuqQmte7m73eMUAbYXaIdkftxsON9iSbHwpMvIcETMzChd8DnnFYOopMMxfjkt4lT/le68xdo5P3GglA+mJiqa5vEkW3sEtQPAI23WYSRCYt3m1ltT4t6NacrDEiXfaZigIZxeG0f1MwlLrmRwbmxOAV1LHbKo8rCHXVl4l7ucBr4wkU8Sh2s9nYkJ1RsLOSkx8eYu0ZeJzkhixbCAumNDlulSHNpfYzbMI4UBk5YBvZs"
+             answer="U2FsdGVkX188HjtdyJqcrtY4QlyztujskpD23iDOxC0vPhMKE0i31vtfrME4AOwoDWH3eFZ8fgaMD93aSJbfvyZEV3y7NZDBcTY4koAnwElzPACGUqeoTTM1lR8evUdzWocYw+j5K3MN9UvgdhQ5gu4gMDt8vUOqDve9IrnDVVhoC1spkKd1Rn6QuqvdiZ2kQhHRmytIpBotqpH9AGnqDg==">
     <h2 class="question-head">Question</h2>
     <div class="question-body">
         <p>On a PC with Windows Desktop Search enabled, what string to put in Outlook search box if you want to find the emails with all the below criteria:</p>
@@ -310,12 +320,11 @@
         </ul>
     </div>
     <div class="question-tip"></div>
-    <textarea class="question-answer"></textarea>
+    <div class="question-answer question-answer-richtext quill-editor" style="width: auto; height: auto; font-family: monospace;"></div>
 </ce-question>
 
-<ce-question type='text'
-             tip="U2FsdGVkX1+91oA9TlURSQGeHbCPAawClVjW5y/PfFFcyhLlnjNcbwQZ9L1cWEgbcNZX/K+DSj6RvD4kJHW0J0O2/QxtqCCfi5OwqkeNy3jLm4GfmJTrHWxmoRBmz2F7eswiAwQ80IFF9Wfxmv9IVcQz8j1/PdsubvCEZMlKzUUJ3MaocECn4QaMzZ0mVkJSV5zrQ9XBiTTX6sySaA2BEmmRHsRHqtMByE5qJy8FKqA07CiTFfL3/Scobo0+4J6el/TeFuumFYso8w8/a2VPbVU3WiFlzGFqXejPXYSNfX3OTjhGreY3M7F4eT/Vo+atIIAKXdDQcXfhc8+u1s/YHzxb632Bl7wnKPfImsKyPPE="
-             answer="U2FsdGVkX18ryIOcv2uIldqGObuBvRKDVRVe8iCHHWXsP5HRaNHftpkkc6vZjC06n6Ko6KxnPWmrF8NSPFvEqeBzQatRB3eZyDFvUaNI1TY24FuDsahGdJgVRVDKaDiJhc4W7ljZkH4BFyQj1tVQew==">
+<ce-question tip="U2FsdGVkX1+91oA9TlURSQGeHbCPAawClVjW5y/PfFFcyhLlnjNcbwQZ9L1cWEgbcNZX/K+DSj6RvD4kJHW0J0O2/QxtqCCfi5OwqkeNy3jLm4GfmJTrHWxmoRBmz2F7eswiAwQ80IFF9Wfxmv9IVcQz8j1/PdsubvCEZMlKzUUJ3MaocECn4QaMzZ0mVkJSV5zrQ9XBiTTX6sySaA2BEmmRHsRHqtMByE5qJy8FKqA07CiTFfL3/Scobo0+4J6el/TeFuumFYso8w8/a2VPbVU3WiFlzGFqXejPXYSNfX3OTjhGreY3M7F4eT/Vo+atIIAKXdDQcXfhc8+u1s/YHzxb632Bl7wnKPfImsKyPPE="
+             answer="U2FsdGVkX1+kwUg/T7NxPUbVzF20gSSXWnP2nDzKqR4FvYBJP1kFUQlp2DHZ4p6tD0p+PAe679S1sFWJnu83bsUadsdWggG/x6lmuDdYHx9IZYTh9MgPuOLsTHY0OcZKCSeBprT5NApEUVGfNUzZmQ==">
     <h2 class="question-head">Question</h2>
     <p class="question-body"><span>During a </span>
         <c>chkdsk</c>
@@ -323,31 +332,28 @@
     </p>
     <img src="res/chkdsk-frozen.png">
     <div class="question-tip"></div>
-    <textarea class="question-answer"></textarea>
+    <textarea class="question-answer question-answer-text"></textarea>
 </ce-question>
 
-<ce-question type='text'
-             tip="U2FsdGVkX1+eNaRVoqXg64rRHqUPfEYPAK3dWqSZYccqn2B+6q1HebXYPqoJBVdlqYjVUNCeceqCNPe3iteUgV7XG8QNmNQ5+Eu6DStXWr/myQqg5XC+Fbh7gZ9/DBRmiYPX6YoqPX3WFGdTRBZy7QmM3IBIk9F8KrzyrEimkaY="
-             answer="U2FsdGVkX18sm16UuYOUbmNaSA+8T/rewNi4QTFlLCJU+NkAoXANQXziQAVXx0KfAezMda0Go2DucI2MIg2D/K1wH+DdQlqs0h8IplF08SgIYF1HuQ0aphiQPak/kt+7kcOEtkcyToveL7QAu8/petGPUsjuk1/m3wOR3ygXQWFLKmk1yHuCe8pYoQZTxlaqqgrEMxa+DM0to7Br7EiZvNpOlp1vpEvxCJC9cRE7Rv92utsS05B+EJ8FM0OmMz0dn+HvHwAT9SLQXe9q9HOtmQ==">
+<ce-question tip="U2FsdGVkX1+eNaRVoqXg64rRHqUPfEYPAK3dWqSZYccqn2B+6q1HebXYPqoJBVdlqYjVUNCeceqCNPe3iteUgV7XG8QNmNQ5+Eu6DStXWr/myQqg5XC+Fbh7gZ9/DBRmiYPX6YoqPX3WFGdTRBZy7QmM3IBIk9F8KrzyrEimkaY="
+             answer="U2FsdGVkX1+iEIHJQQFe4Fywm+vAJ4Ex6OrQ3jzyZgq1qG33I3PGBk2W9zv3ykztoEpBGdsToYeDzm6iOPj5DO0x79alQWcxsyaOPnbWZ3Ti3R03PMWGKQfPw9O38qYlFQl/LXRENnXmQxcBmyRmShnxoBfL5a85o+khiuZNvsn6rZVYLubiXeqFeO2HoM7STRn2FnUzHX2zsPMerlBeX6JXYZ786e1LZvVUkkxIR8Jyqhv/oFaRQB3nuheO0f1ySuzZu892QVTisfDcZUbezw==">
     <h2 class="question-head">Question</h2>
     <p class="question-body">On the PC, find out why pinging
         <c>www.baidu.com</c>
         doesn't work, but Internet browsing works.
     </p>
     <div class="question-tip"></div>
-    <textarea class="question-answer"></textarea>
+    <textarea class="question-answer question-answer-text"></textarea>
 </ce-question>
 
-<ce-question type='text'
-             tip="U2FsdGVkX18yxaOvPKG1cAa2Z5mLzwuake0rbfk3FYs0Lr3SD6Yf5+U+j3wi7kCOg8pxJhAtu7oIPkDCKXH0nB1G5hB/a9L9K0vy+R6imlU=">
+<ce-question tip="U2FsdGVkX18yxaOvPKG1cAa2Z5mLzwuake0rbfk3FYs0Lr3SD6Yf5+U+j3wi7kCOg8pxJhAtu7oIPkDCKXH0nB1G5hB/a9L9K0vy+R6imlU=">
     <h2 class="question-head">Question</h2>
     <p class="question-body">On the PC, generate an HTML report of the group policy objects and save to Desktop.</p>
     <div class="question-tip"></div>
 </ce-question>
 
-<ce-question type='text'
-             tip="U2FsdGVkX18+/ObFNgoJoehI+cWkDl9WYQLe4EfrmR/p7OubmTfidwKwt7rC2sm3CFuOGk42SSoNbiDM7JNUVykxeN6r9rOz/kQmtkZV38dGtIO0N4FA3eeB/pEqJfXI9qscs5RZmmjS9jaR1e6P0TAbVtJNpbO2QBd9xMW1jzyyPygGb7xGzIuI1kVKAvPH0QZb+srZdGqLNDhwgZm/Umc+fF1ZI13MAUSmI9Zj93LMAO5spaO51Dp5T5rfUfZuhYIQJyWU8HMt9o2Le5aWkir26wxaDx7YrfdUeU4SxCuzAa3yGXD3in54+opBdrNRvznqd+Y+f0i1K4E6K+e0wKQDaDkzwvJSk0MeDcty4+CZnWccPtTGtfQjaEc0X4xZECT0YclwICGbr57d3Fwu1ludX8zSdi6hW48qTEP5pvhp99z2QZJm14Rx6p6WlpD+z9Vezd3TgYieXqFvBIjQF7miUTmi8r/Hco6wekngYN8="
-             answer="U2FsdGVkX1/Tnvlez/6NWcbk3H/UluA/28Ym9rF/w0AwgziKpHpxOwNmUjMcK+gZ0csssJ9aoUaW7KJ1vj+a1SYlkmDeManzC78VxUDixnmUymxMKBPS51apH9qyw8pbvr7RHT4Mc9Y5x5g1AO6V/guv0kKKAmuUv0wSccdQC1FYhQAP+efVYwMSeD6fqUzZ">
+<ce-question tip="U2FsdGVkX18+/ObFNgoJoehI+cWkDl9WYQLe4EfrmR/p7OubmTfidwKwt7rC2sm3CFuOGk42SSoNbiDM7JNUVykxeN6r9rOz/kQmtkZV38dGtIO0N4FA3eeB/pEqJfXI9qscs5RZmmjS9jaR1e6P0TAbVtJNpbO2QBd9xMW1jzyyPygGb7xGzIuI1kVKAvPH0QZb+srZdGqLNDhwgZm/Umc+fF1ZI13MAUSmI9Zj93LMAO5spaO51Dp5T5rfUfZuhYIQJyWU8HMt9o2Le5aWkir26wxaDx7YrfdUeU4SxCuzAa3yGXD3in54+opBdrNRvznqd+Y+f0i1K4E6K+e0wKQDaDkzwvJSk0MeDcty4+CZnWccPtTGtfQjaEc0X4xZECT0YclwICGbr57d3Fwu1ludX8zSdi6hW48qTEP5pvhp99z2QZJm14Rx6p6WlpD+z9Vezd3TgYieXqFvBIjQF7miUTmi8r/Hco6wekngYN8="
+             answer="U2FsdGVkX1+y5MihnZN3FqTBFdNUHObUJoDFnNzhNNsQraQDY/tmerCfTF8IeNzfO3O9gOTUDweJJZplXApGJMy3eyLPektpD/Pr2crtWkqaJI3/qQQc21/zADbTaKoZ6e6y7HQTCqgoynn85by+BBvRs0YpWiKv+ppQVdGIbaz6+QN4/zVRGEc9zxp79ay4PDyuXWfKu8lnWwV49/W4u8U3nGOKzWwdTuwIiNkCcVI=">
     <h2 class="question-head">Question</h2>
     <div class="question-body">
         <p>On the PC, create a one-line command in PowerShell to test whether an IP address is in the correct format.</p>
@@ -360,18 +366,9 @@
         <i style="font-size: smaller">Hint: Use Regex and Google to complete the task. The task does not require deep knowledge of Regex or PowerShell.</i>
     </div>
     <div class="question-tip"></div>
-    <textarea class="question-answer" style="height: 8em;"></textarea>
+    <div class="question-answer question-answer-richtext quill-editor" style="width: auto; height: auto; font-family: monospace;"></div>
 </ce-question>
 
-
-<!--<ce-question index="3" type='multi-choice'>
-    <h2 class="question-head">Question 4</h2>
-    <p class="question-body">Sample multi choice question!!!!!!!!!!</p>
-    <div class="question-answer question-answer-select" value="die"><span style="margin-left: 0.4em">I would die.</span></div>
-    <div class="question-answer question-answer-select" value="crap"><span style="margin-left: 0.4em">I would crap.</span></div>
-    <div class="question-answer question-answer-select" value="fart"><span style="margin-left: 0.4em">Fart as much as possible.</span></div>
-    <div class="question-answer question-answer-select" value="eat dirt"><span style="margin-left: 0.4em">Eat some dirt.</span></div>
-</ce-question>-->
 
 <script>
     [...document.getElementsByClassName('quill-editor')].forEach(ele => {
@@ -456,8 +453,8 @@
         // });
     };
 
-    function getEncryptedAnswer(answer, isJson = false) {
-        return Question.encrypt(isJson ? JSON.stringify(answer) : answer);
+    function getEncryptedAnswer(answer, stringify = false) {
+        return Question.encrypt(stringify ? JSON.stringify(answer) : answer);
     }
 
 </script>

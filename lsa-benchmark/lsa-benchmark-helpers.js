@@ -22,11 +22,11 @@ class Question extends HTMLElement {
         else this.removeAttribute('tip');
     }
 
-    get type() { return this.getAttribute('type'); }
-    set type(val) {
-        if (val) this.setAttribute('type', val);
-        else this.removeAttribute('type');
-    }
+    // get type() { return this.getAttribute('type'); }
+    // set type(val) {
+    //     if (val) this.setAttribute('type', val);
+    //     else this.removeAttribute('type');
+    // }
 
     constructor() {
         super();
@@ -37,17 +37,20 @@ class Question extends HTMLElement {
         Body: 'question-body',
         Answer: 'question-answer',
         Select: 'question-answer-select',
+        MultiSelect: 'question-answer-select-multi',
         Selected: 'question-answer-selected',
+        Text: 'question-answer-text',
+        RichText: 'question-answer-richtext',
         RefAnswer: 'question-ref-answer',
         Tip: 'question-tip',
     };
 
-    static Types = {
-        RichText: 'richtext',
-        Text: 'text',
-        SingleChoice: 'single-choice',
-        MultiChoice: 'multi-choice',
-    };
+    // static Types = {
+    //     RichText: 'richtext',
+    //     Text: 'text',
+    //     SingleChoice: 'single-choice',
+    //     MultiChoice: 'multi-choice',
+    // };
 
     static AutoSizeTimer = new Map();
     static BaseAnimDuration = 300;
@@ -83,6 +86,17 @@ class Question extends HTMLElement {
      */
     get question_answers() {
         return [...this.getElementsByClassName(Question.Classes.Answer)];
+    }
+
+    processAnswers({cbAllPre, cbText, cbRichText, cbSelect, cbMultiSelect, cbSelected}) {
+        this.question_answers.forEach((a, i) => {
+            if (cbAllPre) cbAllPre(a, i);
+            if (cbSelect && a.classList.contains(Question.Classes.Select)) cbSelect(a, i);
+            if (cbMultiSelect && a.classList.contains(Question.Classes.MultiSelect)) cbMultiSelect(a, i);
+            if (cbSelected && a.classList.contains(Question.Classes.Selected)) cbSelected(a, i);
+            if (cbText && a.classList.contains(Question.Classes.Text)) cbText(a, i);
+            if (cbRichText && a.classList.contains(Question.Classes.RichText)) cbRichText(a, i);
+        })
     }
 
     static updateHeight(element, initial = '1.6em') {
@@ -121,7 +135,7 @@ class Question extends HTMLElement {
 
         let delay = 0;
         let pros = [];
-        [...document.getElementsByTagName('ce-question')].forEach(question=> {
+        [...document.getElementsByTagName('ce-question')].forEach(question => {
             pros.push(new Promise((resolve, reject) => {
                 setTimeout(() => {
                     //show or hide reference answer. decryptKey should have been set
@@ -184,7 +198,7 @@ class Question extends HTMLElement {
 
     connectedCallback() {
         this.className = 'question';
-        if (!this.type) this.type = Question.Types.Text;
+        // if (!this.type) this.type = Question.Types.Text;
 
         //wait till element contents are rendered
         setTimeout(() => {
@@ -192,49 +206,41 @@ class Question extends HTMLElement {
             //load saved answer
             this.loadAnswer();
             //post init
-            switch (this.type) {
-                case Question.Types.RichText:
-                    this.question_answers.forEach(ans => {
-                        ans.quill.on('text-change', () => this.saveAnswer());
-                    });
-                    break;
-                case Question.Types.Text:
-                    this.question_answers.forEach(ans => {
-                        ans.addEventListener('scroll', e => e.target.scrollTop = 0);//prevent scrolling due to height auto growth
-                        ans.addEventListener('input', e => {
-                            //auto grow height
-                            e.target.scrollTop = 0;
-                            Question.updateHeight(e.target);
-                        });
-                        ans.addEventListener('change', e => this.saveAnswer());
-                    });
-                    break;
-                case Question.Types.SingleChoice:
-                    this.question_answers.forEach(ans => {
-                        ans.style.cursor = 'pointer';
-                        ans.addEventListener('click', e => {
-                            //set selection status
-                            this.question_answers.forEach(c => {
-                                c.classList.remove(Question.Classes.Selected);
-                            });
-                            e.currentTarget.classList.add(Question.Classes.Selected);
-                            //save answer
-                            this.saveAnswer();
-                        });
-                    });
-                    break;
-                case Question.Types.MultiChoice:
-                    this.question_answers.forEach(ans => {
-                        ans.style.cursor = 'pointer';
+            this.processAnswers({
+                cbSelect: ans => {
+                    ans.style.cursor = 'pointer';
+                    if (ans.classList.contains(Question.Classes.MultiSelect)) {
                         ans.addEventListener('click', e => {
                             //set selection status
                             e.currentTarget.classList.toggle(Question.Classes.Selected);
-                            //save answer
                             this.saveAnswer();
-                        });
+                        })
+                    }
+                    else {
+                        ans.addEventListener('click', e => {
+                            //clear selection on other single selects
+                            this.question_answers.filter(ans => ans.classList.contains(Question.Classes.Select) &&
+                                                                !ans.classList.contains(Question.Classes.MultiSelect)).forEach(c => {
+                                c.classList.remove(Question.Classes.Selected);
+                            });
+                            e.currentTarget.classList.add(Question.Classes.Selected);
+                            this.saveAnswer();
+                        })
+                    }
+                },
+                cbText: ans => {
+                    ans.addEventListener('scroll', e => e.target.scrollTop = 0);//prevent scrolling due to height auto growth
+                    ans.addEventListener('input', e => {
+                        //auto grow height
+                        e.target.scrollTop = 0;
+                        Question.updateHeight(e.target);
                     });
-                    break;
-            }
+                    ans.addEventListener('change', () => this.saveAnswer());
+                },
+                cbRichText: ans => {
+                    ans.quill.on('text-change', () => this.saveAnswer());
+                },
+            });
         });
     }
 
@@ -254,49 +260,49 @@ class Question extends HTMLElement {
             stor = JSON.parse(localStorage.getItem(this.id));
         }
 
-        //reset state / clear selections
-        this.question_answers.forEach(e => {
-            e.classList.remove(Question.Classes.RefAnswer);
-            if (refAnswer) e.classList.add(Question.Classes.RefAnswer);
+        this.processAnswers({
+            cbAllPre: ans => {
+                ans.classList.remove(Question.Classes.RefAnswer);
+                if (refAnswer) ans.classList.add(Question.Classes.RefAnswer);
+            },
+            cbSelect: (ans, i) => {
+                ans.classList.remove(Question.Classes.Selected);
 
-            switch (this.type) {
-                case Question.Types.RichText:
-                case Question.Types.Text:
-                    e.value = null;
-                    Question.updateHeight(e);
-                    break;
-                case Question.Types.SingleChoice:
-                case Question.Types.MultiChoice:
-                    e.classList.remove(Question.Classes.Selected);
-                    break;
-            }
+                if (stor && stor.answer && stor.answer.hasOwnProperty(ans.getAttribute('value')))
+                    ans.classList.add(Question.Classes.Selected);
+            },
+            cbText: (ans, i) => {
+                ans.value = stor && stor.answer ? stor.answer[i] : null;
+                Question.updateHeight(ans);
+            },
+            cbRichText: (ans, i) => {
+                ans.quill.setContents(stor && stor.answer && stor.answer[i] ? JSON.parse(stor.answer[i]) : null);
+                // Question.updateHeight(ans);
+            },
         });
 
-        if (!stor || !stor.answer) return;
-        switch (this.type) {
-            case Question.Types.RichText:
-            case Question.Types.Text:
-                let ans = this.question_answers;
-                for (let i = 0; i < ans.length; i++) {
-                    ans[i].value = null;
-                    if (i < stor.answer.length) {
-                        if (this.type === Question.Types.RichText)
-                            ans[i].quill.setContents(JSON.parse(stor.answer[i]));
-                        else
-                            ans[i].value = stor.answer[i];
-                    }
-                    Question.updateHeight(ans[i]);
-                }
-                break;
-            case Question.Types.SingleChoice:
-            case Question.Types.MultiChoice:
-                if (Object.keys(stor.answer).length === 0) break;
-                let selected = this.question_answers.filter(e => stor.answer.hasOwnProperty(e.getAttribute('value')));
-                if (selected.length > 0) selected.forEach(e => {
-                    e.classList.add(Question.Classes.Selected);
-                });
-                break;
-        }
+        // switch (this.type) {
+        //     case Question.Types.RichText:
+        //     case Question.Types.Text:
+        //         let ans = this.answers;
+        //         ans[i].value = null;
+        //         if (i < stor.answer.length) {
+        //             if (this.type === Question.Types.RichText)
+        //                 ans[i].quill.setContents(JSON.parse(stor.answer[i]));
+        //             else
+        //                 ans[i].value = stor.answer[i];
+        //         }
+        //         Question.updateHeight(ans[i]);
+        //         break;
+        //     case Question.Types.SingleChoice:
+        //     case Question.Types.MultiChoice:
+        //         if (Object.keys(stor.answer).length === 0) break;
+        //         let selected = this.answers.filter(e => stor.answer.hasOwnProperty(e.getAttribute('value')));
+        //         if (selected.length > 0) selected.forEach(e => {
+        //             e.classList.add(Question.Classes.Selected);
+        //         });
+        //         break;
+        // }
     }
 
     saveAnswer() {
@@ -304,26 +310,33 @@ class Question extends HTMLElement {
 
         let stor = {
             question: this.question_bodies.map(e=>e.textContent.trim()),
-            answer: null,
+            answer: {},
         };
-        switch (this.type) {
-            case Question.Types.RichText:
-                stor.answer = this.question_answers.map(e=>JSON.stringify(e.quill.getContents()));
-                break;
-            case Question.Types.Text:
-                if (this.question_answers.length === 0) break;
-                stor.answer = this.question_answers.map(e=>e.value);
-                break;
-            case Question.Types.SingleChoice:
-            case Question.Types.MultiChoice:
-                stor.answer = [...this.getElementsByClassName(Question.Classes.Selected)].reduce((pre, cur) => {
-                    pre[cur.getAttribute('value')] = cur.textContent.trim();
-                    return pre;
-                }, {});
-                break;
-            default:
-                return;
-        }
+
+        this.processAnswers({
+            cbSelected: (ans, i) => stor.answer[ans.getAttribute('value')] = true,
+            cbText: (ans, i) => stor.answer[i] = ans.value,
+            cbRichText: (ans, i) => stor.answer[i] = JSON.stringify(ans.quill.getContents()),
+        });
+
+        // switch (this.type) {
+        //     case Question.Types.RichText:
+        //         stor.answer = this.answers.map(e=>JSON.stringify(e.quill.getContents()));
+        //         break;
+        //     case Question.Types.Text:
+        //         if (this.answers.length === 0) break;
+        //         stor.answer = this.answers.map(e=>e.value);
+        //         break;
+        //     case Question.Types.SingleChoice:
+        //     case Question.Types.MultiChoice:
+        //         stor.answer = [...this.getElementsByClassName(Question.Classes.Selected)].reduce((pre, cur) => {
+        //             pre[cur.getAttribute('value')] = cur.textContent.trim();
+        //             return pre;
+        //         }, {});
+        //         break;
+        //     default:
+        //         return;
+        // }
         localStorage.setItem(this.id, JSON.stringify(stor));
     }
 
@@ -344,27 +357,6 @@ class Question extends HTMLElement {
             $(tipElement).slideUp(Question.BaseAnimDuration, ()=>tipElement.innerHTML = '');
         }
     }
-
-/*
-    static get observedAttributes() {
-        return ['answer', 'type'];
-    }
-    attributeChangedCallback(attrName, oldVal, newVal) {
-        if (null === oldVal || oldVal === newVal) return;
-        //update rendered content
-        let ele_collection, callback;
-        switch (attrName) {
-            case 'head':
-                ele_collection = this.getElementsByClassName('question question-head');
-                callback = (ele, val) => ele.textContent = val;
-                break;
-        }
-
-        for (const ele of ele_collection) {
-            callback(ele, newVal);
-        }
-    }
-*/
 }
 
 //define custom element
