@@ -22,6 +22,9 @@
     <link href="../lib/quill/quill.snow.css" rel="stylesheet">
     <script src="../lib/quill/quill.min.js"></script>
 
+    <!-- Luxon -->
+    <script src="../lib/luxon.min.js"></script>
+
     <!-- page style -->
     <style>
         .hidden {
@@ -189,7 +192,7 @@
        title="Clear everything"
        onclick="Question.clearAllAnswers()">
     </i>
-    <i class="button round-button fas fa-file-import hidden"
+    <i class="button round-button fas fa-graduation-cap hidden"
        style="background-color: #304078; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
        title="Toggle reference answers"
        onclick="(function(i) {
@@ -200,10 +203,19 @@
            Question.toggleRefAnswers(() => i.classList.remove('disabled'));
        })(this)">
     </i>
-    <i class="button round-button fas fa-file-download hidden"
+    <i class="button round-button fas fa-file-import hidden"
+        style="background-color: #304078; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
+        title="Import answers"
+        onclick="(function(i) {
+            uploadFile(content => {
+                Question.importAllAnswers(content);
+            });
+        })(this)">
+    </i>
+    <i class="button round-button fas fa-file-download"
        style="background-color: #856827; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
        title="Export answers"
-       onclick="popupCheck('Not implemented yet.', 'fas fa-exclamation-circle', 'orange')">
+       onclick="let cn = document.getElementById('cand_name').value || prompt('Please enter your name...'); if (cn) Question.exportAllAnswers(`${cn}-${luxon.DateTime.now().toFormat('yyyyMMddHHmmss')}`);">
     </i>
     <i class="button round-button fas fa-save"
        style="background-color: #207829; float: right; margin: 0 0 0.4em 0.3em; font-size: larger"
@@ -212,6 +224,10 @@
     </i>
 </div>
 
+<div style="display: flex; flex-direction: row; align-items: center;">
+    <h3 style="margin-right: 1em;">Your name</h3>
+    <textarea id="cand_name"></textarea>
+</div>
 
 <h1>Part 1</h1>
 <ce-question tip="U2FsdGVkX1/IXPQratmhKWppyUCdzKnpqZzG+FBkNkNMiDP0+0plamPHcDIAzM2pAH0+mMHghhY8uAGu6ZOKOGl0SuCF5QoeOf62Anr1W565w86o6UpPb5Ctho1ibmRh8kF49qVBG95U+SczL1JbsmTB+7GfMZa63sqWWzHqRYzWnBkEMlOyQPVbAxzAfers0K4xwhon2m6Vef6lSKtA6uHORIWxqyFbLuvxhfInPkI="

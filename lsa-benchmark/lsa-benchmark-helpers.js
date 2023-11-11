@@ -118,6 +118,35 @@ class Question extends HTMLElement {
         if (callback) callback()
     }
 
+    static exportAllAnswers(filename, callback) {
+        this.saveAllAnswers();
+
+        const fileContent = JSON.stringify(localStorage);
+        downloadFile(new Blob([fileContent], { type: 'text/plain' }), filename);
+
+        if (callback) callback();
+    }
+
+    static importAllAnswers(jsonStr, callback) {
+        try {
+            const obj = JSON.parse(jsonStr);
+
+            localStorage.clear();
+            window.skipSaving = true;
+
+            Object.keys(obj).forEach(function (k) {
+                localStorage.setItem(k, obj[k]);
+            });
+        }
+        catch (err) {
+            alert(err);
+        }
+        finally {
+            if (callback) callback();
+            location.reload();
+        }
+    }
+
 
     static clearAllAnswers() {
         if (confirm('Are you sure to clear all saved answers and reload? There is no going back!')) {

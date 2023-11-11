@@ -98,3 +98,31 @@ String.prototype.hashCode = function() {
     }
     return hash;
 };
+
+function downloadFile(blob, filename) {
+    const objUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = objUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(objUrl), 5000);
+}
+
+function uploadFile(callback) {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.onchange = e => { 
+        var file = e.target.files[0]; 
+
+        var reader = new FileReader();
+        reader.readAsText(file,'UTF-8');
+
+        reader.onload = readerEvent => {
+            var content = readerEvent.target.result;
+            callback(content);
+        }
+    }
+    input.click();
+}
